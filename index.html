@@ -2,139 +2,161 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BD Mobile Extractor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BD Mobile Scanner Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <style>
         :root {
-            --primary: #00ff88;
+            --primary: #00e676;
             --bg: #121212;
-            --card: #1e1e1e;
-            --text: #e0e0e0;
+            --surface: #1e1e1e;
+            --on-surface: #ffffff;
+            --accent: #2979ff;
         }
 
+        /* Mobile-First Reset */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg);
-            color: var(--text);
+            color: var(--on-surface);
             margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden; /* Prevent body scroll, use inner scroll for list */
         }
 
-        .container {
-            width: 100%;
-            max-width: 500px;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
+        /* Header */
         header {
+            padding: 16px;
             text-align: center;
-            margin-bottom: 20px;
+            background: var(--surface);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            z-index: 10;
         }
 
-        h1 { color: var(--primary); font-size: 1.5rem; }
+        h1 { margin: 0; font-size: 1.2rem; color: var(--primary); letter-spacing: 1px; }
 
-        /* Scanner UI */
-        #video-container {
+        /* Scanning Area - Flexible Layout */
+        .scanner-viewport {
             position: relative;
-            width: 100%;
-            border-radius: 12px;
-            overflow: hidden;
+            flex: 1; /* Takes available space */
             background: #000;
-            display: none;
-            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
-        video { width: 100%; display: block; }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Fill the viewport */
+        }
 
-        .scan-overlay {
+        /* The Focus Frame Overlay */
+        .overlay {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            height: 40%;
+            width: 280px;
+            height: 160px;
             border: 2px solid var(--primary);
-            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
-            pointer-events: none;
-        }
-
-        /* Controls */
-        .controls {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        button {
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            background: var(--card);
-            color: white;
-            border: 1px solid #333;
-        }
-
-        .btn-primary { background: var(--primary); color: #000; }
-
-        /* Results Area */
-        .result-section {
-            background: var(--card);
             border-radius: 12px;
-            padding: 15px;
-            min-height: 200px;
+            box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.6);
+            z-index: 5;
         }
 
-        .result-header {
+        .overlay::after {
+            content: "ALIGN NUMBER HERE";
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: var(--primary);
+            white-space: nowrap;
+        }
+
+        /* Results Panel - Bottom Sheet Style */
+        .results-panel {
+            background: var(--surface);
+            height: 35vh;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .panel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        .status-pill {
+            font-size: 11px;
+            background: #333;
+            padding: 4px 10px;
+            border-radius: 20px;
+            color: #aaa;
         }
 
         #number-list {
-            list-style: none;
-            padding: 0;
+            flex: 1;
+            overflow-y: auto;
             margin: 0;
+            padding: 0;
+            list-style: none;
         }
 
-        .number-item {
+        .number-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #2a2a2a;
-            padding: 10px;
+            padding: 12px;
+            background: #252525;
             margin-bottom: 8px;
-            border-radius: 6px;
-            animation: fadeIn 0.3s ease;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .copy-btn {
-            background: transparent;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 4px 8px;
-            font-size: 0.8rem;
+        /* Controls - Floating Buttons */
+        .fab-container {
+            position: absolute;
+            bottom: 37vh;
+            right: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 20;
         }
 
-        /* Status Indicator */
-        #status {
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 10px;
-            text-align: center;
+        .btn-round {
+            width: 56px;
+            height: 56px;
+            border-radius: 28px;
+            border: none;
+            background: var(--primary);
+            color: #000;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-copy-all {
+            background: var(--accent);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            font-weight: bold;
+            font-size: 12px;
         }
 
         canvas { display: none; }
@@ -142,181 +164,153 @@
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>BD Number Extractor</h1>
-        <p>OCR-Powered Mobile Scanner</p>
-    </header>
+<header>
+    <h1>BD NUMBER SCANNER</h1>
+</header>
 
-    <div id="video-container">
-        <video id="video" playsinline></video>
-        <div class="scan-overlay"></div>
-    </div>
-
-    <div class="controls">
-        <button id="start-camera" class="btn-primary">Live Scanner</button>
-        <button onclick="document.getElementById('file-input').click()">Upload Image</button>
-        <input type="file" id="file-input" hidden accept="image/*">
-    </div>
-
-    <div class="result-section">
-        <div class="result-header">
-            <span>Detected Numbers</span>
-            <button id="copy-all" class="copy-btn" style="display:none">Copy All</button>
-        </div>
-        <ul id="number-list">
-            </ul>
-        <div id="status">Ready to scan...</div>
+<div class="scanner-viewport">
+    <video id="video" playsinline></video>
+    <div id="scanner-frame" class="overlay"></div>
+    
+    <div class="fab-container">
+        <button id="toggle-cam" class="btn-round" title="Start/Stop">📸</button>
+        <button onclick="document.getElementById('file-up').click()" class="btn-round" style="background: #fff;">📂</button>
+        <input type="file" id="file-up" hidden accept="image/*">
     </div>
 </div>
 
-<canvas id="canvas"></canvas>
+<div class="results-panel">
+    <div class="panel-header">
+        <span class="status-pill" id="status">Standby</span>
+        <button id="copy-all" class="btn-copy-all" style="display:none">Copy All</button>
+    </div>
+    <ul id="number-list">
+        </ul>
+</div>
+
+<canvas id="proc-canvas"></canvas>
 
 <script>
     const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const numberList = document.getElementById('number-list');
-    const status = document.getElementById('status');
+    const statusEl = document.getElementById('status');
+    const listEl = document.getElementById('number-list');
     const copyAllBtn = document.getElementById('copy-all');
-    const fileInput = document.getElementById('file-input');
     
-    let detectedNumbers = new Set();
     let isScanning = false;
+    let worker = null;
+    const detected = new Set();
 
-    // 1. Regex Logic: BD Numbers
-    // Matches 01 followed by 3-9, then 8 digits. 
-    // Also handles +880 and 88 prefixes.
-    const bdRegex = /(?:\+?88)?(01[3-9]\d{8})/g;
+    // REGEX: 11-digit Bangladesh mobile numbers
+    const bdPattern = /(?:\+?88)?(01[3-9]\d{8})/g;
 
-    // 2. Initialize Tesseract Worker
-    async function processImage(source) {
-        status.innerText = "Processing OCR...";
-        try {
-            const result = await Tesseract.recognize(source, 'eng');
-            const text = result.data.text;
-            extractNumbers(text);
-        } catch (err) {
-            status.innerText = "Error: " + err.message;
+    // Initialize Tesseract Worker once to save mobile memory
+    async function initWorker() {
+        if (!worker) {
+            statusEl.innerText = "Initializing Engine...";
+            worker = await Tesseract.createWorker('eng');
         }
     }
 
-    function extractNumbers(text) {
-        let match;
-        let foundNew = false;
-        
-        // Remove spaces/dashes to help OCR inconsistencies
-        const cleanText = text.replace(/[\s-]/g, '');
-
-        while ((match = bdRegex.exec(cleanText)) !== null) {
-            let num = match[1]; // Get the 11-digit group
-            if (!detectedNumbers.has(num)) {
-                detectedNumbers.add(num);
-                addNumberToList(num);
-                foundNew = true;
-            }
-        }
-
-        if (foundNew) {
-            provideFeedback();
-            copyAllBtn.style.display = 'block';
-        }
-        status.innerText = foundNew ? "New number found!" : "No new numbers detected.";
-    }
-
-    // 3. UI Helpers
-    function addNumberToList(num) {
-        const li = document.createElement('li');
-        li.className = 'number-item';
-        li.innerHTML = `
-            <span>${num}</span>
-            <button class="copy-btn" onclick="copyToClipboard('${num}')">Copy</button>
-        `;
-        numberList.prepend(li);
-    }
-
-    function provideFeedback() {
-        if (navigator.vibrate) navigator.vibrate(100);
-        // Simple Audio Feedback
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        osc.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.1);
-    }
-
-    // 4. Camera Handling
-    document.getElementById('start-camera').addEventListener('click', async () => {
-        if (isScanning) {
-            stopCamera();
-            return;
-        }
-
+    async function startScanner() {
+        await initWorker();
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: "environment" } 
+                video: { 
+                    facingMode: "environment",
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                } 
             });
             video.srcObject = stream;
             video.play();
-            document.getElementById('video-container').style.display = 'block';
-            document.getElementById('start-camera').innerText = "Stop Scanner";
             isScanning = true;
-            
-            // Start periodic frame capture
-            scanFrame();
-        } catch (err) {
-            alert("Camera access denied or not available.");
+            statusEl.innerText = "Active: Scanning...";
+            requestAnimationFrame(processLoop);
+        } catch (e) {
+            statusEl.innerText = "Camera Error";
         }
-    });
-
-    function stopCamera() {
-        const stream = video.srcObject;
-        if (stream) stream.getTracks().forEach(t => t.stop());
-        document.getElementById('video-container').style.display = 'none';
-        document.getElementById('start-camera').innerText = "Live Scanner";
-        isScanning = false;
     }
 
-    async function scanFrame() {
+    async function processLoop() {
         if (!isScanning) return;
 
-        // Draw current video frame to hidden canvas
+        // Perform OCR every 2.5 seconds to save battery
+        const canvas = document.getElementById('proc-canvas');
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0);
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        
+        try {
+            const { data: { text } } = await worker.recognize(canvas);
+            handleText(text);
+        } catch (e) { console.error(e); }
 
-        // Process frame
-        await processImage(canvas);
-
-        // Repeat after 2 seconds to avoid freezing the UI
-        if (isScanning) setTimeout(scanFrame, 2000);
+        if (isScanning) setTimeout(() => requestAnimationFrame(processLoop), 2500);
     }
 
-    // 5. File Upload Handling
-    fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            processImage(event.target.result);
-        };
-        reader.readAsDataURL(file);
+    function handleText(rawText) {
+        // Strip spaces/dashes for cleaner regex matching
+        const clean = rawText.replace(/[\s-]/g, '');
+        let match;
+        let found = false;
+
+        while ((match = bdPattern.exec(clean)) !== null) {
+            const num = match[1];
+            if (!detected.has(num)) {
+                detected.add(num);
+                renderNumber(num);
+                found = true;
+            }
+        }
+
+        if (found) {
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            copyAllBtn.style.display = 'block';
+        }
+    }
+
+    function renderNumber(num) {
+        const li = document.createElement('li');
+        li.className = 'number-row';
+        li.innerHTML = `
+            <strong>${num}</strong>
+            <button class="btn-copy-all" style="background:#444" onclick="copySingle('${num}')">Copy</button>
+        `;
+        listEl.prepend(li);
+    }
+
+    function stopScanner() {
+        if (video.srcObject) {
+            video.srcObject.getTracks().forEach(track => track.stop());
+        }
+        isScanning = false;
+        statusEl.innerText = "Stopped";
+    }
+
+    document.getElementById('toggle-cam').addEventListener('click', () => {
+        if (isScanning) stopScanner(); else startScanner();
     });
 
-    // 6. Utility Features
-    window.copyToClipboard = (text) => {
-        navigator.clipboard.writeText(text);
-        alert("Copied: " + text);
+    window.copySingle = (val) => {
+        navigator.clipboard.writeText(val);
+        statusEl.innerText = "Copied " + val;
     };
 
     copyAllBtn.addEventListener('click', () => {
-        const allNums = Array.from(detectedNumbers).join('\n');
-        navigator.clipboard.writeText(allNums);
-        alert("All numbers copied to clipboard!");
+        navigator.clipboard.writeText(Array.from(detected).join(', '));
+        statusEl.innerText = "All Copied!";
     });
 
+    // File Upload Support
+    document.getElementById('file-up').addEventListener('change', async (e) => {
+        await initWorker();
+        const file = e.target.files[0];
+        if (file) {
+            statusEl.innerText = "Analyzing Image...";
+            const { data: { text } } = await worker.recognize(file);
+            handleText(text);
+        }
+    });
 </script>
-
 </body>
 </html>
