@@ -1,316 +1,291 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BD Mobile Scanner Pro</title>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kegel Pro Dark - Timer</title>
     <style>
         :root {
-            --primary: #00e676;
-            --bg: #121212;
-            --surface: #1e1e1e;
-            --on-surface: #ffffff;
-            --accent: #2979ff;
+            --bg-color: #121212; /* Dark Background */
+            --card-bg: #1e1e1e;
+            --hold-color: #00e676;
+            --relax-color: #29b6f6;
+            --text-main: #ffffff;
+            --text-dim: #b0bec5;
+            --accent: #bb86fc;
         }
 
-        /* Mobile-First Reset */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--on-surface);
-            margin: 0;
-            padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden; /* Prevent body scroll, use inner scroll for list */
-        }
-
-        /* Header */
-        header {
-            padding: 16px;
-            text-align: center;
-            background: var(--surface);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            z-index: 10;
-        }
-
-        h1 { margin: 0; font-size: 1.2rem; color: var(--primary); letter-spacing: 1px; }
-
-        /* Scanning Area - Flexible Layout */
-        .scanner-viewport {
-            position: relative;
-            flex: 1; /* Takes available space */
-            background: #000;
-            display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
             overflow: hidden;
         }
 
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Fill the viewport */
+        .app-container {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            text-align: center;
+            width: 85%;
+            max-width: 400px;
+            border: 1px solid #333;
         }
 
-        /* The Focus Frame Overlay */
-        .overlay {
-            position: absolute;
-            width: 280px;
-            height: 160px;
-            border: 2px solid var(--primary);
-            border-radius: 12px;
-            box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.6);
-            z-index: 5;
+        h2 { color: var(--accent); margin-bottom: 15px; letter-spacing: 1px; }
+
+        .settings {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+            background: #2c2c2c;
+            padding: 15px;
+            border-radius: 15px;
         }
 
-        .overlay::after {
-            content: "ALIGN NUMBER HERE";
-            position: absolute;
-            bottom: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 10px;
-            color: var(--primary);
-            white-space: nowrap;
-        }
+        .settings label { font-size: 10px; font-weight: bold; color: var(--text-dim); text-transform: uppercase; }
 
-        /* Results Panel - Bottom Sheet Style */
-        .results-panel {
-            background: var(--surface);
-            height: 35vh;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            padding: 16px;
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
-            z-index: 10;
-        }
-
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .status-pill {
-            font-size: 11px;
-            background: #333;
-            padding: 4px 10px;
-            border-radius: 20px;
-            color: #aaa;
-        }
-
-        #number-list {
-            flex: 1;
-            overflow-y: auto;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .number-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            background: #252525;
-            margin-bottom: 8px;
-            border-radius: 10px;
-            border-left: 4px solid var(--primary);
-        }
-
-        /* Controls - Floating Buttons */
-        .fab-container {
-            position: absolute;
-            bottom: 37vh;
-            right: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            z-index: 20;
-        }
-
-        .btn-round {
-            width: 56px;
-            height: 56px;
-            border-radius: 28px;
-            border: none;
-            background: var(--primary);
-            color: #000;
-            font-size: 24px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-copy-all {
-            background: var(--accent);
+        input {
+            width: 80%;
+            padding: 8px;
+            background: #3d3d3d;
+            border: 1px solid #555;
+            border-radius: 8px;
+            text-align: center;
             color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: none;
-            font-weight: bold;
-            font-size: 12px;
+            font-size: 16px;
         }
 
-        canvas { display: none; }
+        .round-counter {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+        }
+
+        /* Animation Circle */
+        .timer-circle {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 6px solid #333;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        #status-text {
+            font-weight: bold;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        #timer-display {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        /* Hold: Green & Scaling Up */
+        .hold-active {
+            border-color: var(--hold-color);
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(0, 230, 118, 0.2);
+        }
+
+        /* Relax: Blue & Scaling Down */
+        .relax-active {
+            border-color: var(--relax-color);
+            transform: scale(0.9);
+            box-shadow: 0 0 30px rgba(41, 182, 246, 0.1);
+        }
+
+        .controls { margin-top: 25px; }
+
+        button {
+            padding: 14px 30px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .start-btn { background: var(--hold-color); color: #000; width: 70%; }
+        .reset-btn { background: transparent; color: var(--text-dim); border: 1px solid #444; margin-top: 15px; }
+
+        button:active { transform: scale(0.95); }
+        button:disabled { opacity: 0.3; }
+
     </style>
 </head>
 <body>
 
-<header>
-    <h1>BD NUMBER SCANNER</h1>
-</header>
-
-<div class="scanner-viewport">
-    <video id="video" playsinline></video>
-    <div id="scanner-frame" class="overlay"></div>
+<div class="app-container">
+    <h2>KEGEL TIMER</h2>
     
-    <div class="fab-container">
-        <button id="toggle-cam" class="btn-round" title="Start/Stop">📸</button>
-        <button onclick="document.getElementById('file-up').click()" class="btn-round" style="background: #fff;">📂</button>
-        <input type="file" id="file-up" hidden accept="image/*">
+    <div class="settings" id="settings-panel">
+        <div>
+            <label>Hold</label>
+            <input type="number" id="holdInput" value="5">
+        </div>
+        <div>
+            <label>Relax</label>
+            <input type="number" id="relaxInput" value="5">
+        </div>
+        <div>
+            <label>Rounds</label>
+            <input type="number" id="roundInput" value="10">
+        </div>
+    </div>
+
+    <div class="round-counter">Round: <span id="current-round">0</span> / <span id="total-rounds">0</span></div>
+
+    <div class="timer-circle" id="circle">
+        <div id="status-text">READY</div>
+        <div id="timer-display">0</div>
+    </div>
+
+    <div class="controls">
+        <button class="start-btn" id="startBtn" onclick="startExercise()">Start Exercise</button><br>
+        <button class="reset-btn" onclick="resetApp()">Reset</button>
     </div>
 </div>
-
-<div class="results-panel">
-    <div class="panel-header">
-        <span class="status-pill" id="status">Standby</span>
-        <button id="copy-all" class="btn-copy-all" style="display:none">Copy All</button>
-    </div>
-    <ul id="number-list">
-        </ul>
-</div>
-
-<canvas id="proc-canvas"></canvas>
 
 <script>
-    const video = document.getElementById('video');
-    const statusEl = document.getElementById('status');
-    const listEl = document.getElementById('number-list');
-    const copyAllBtn = document.getElementById('copy-all');
-    
-    let isScanning = false;
-    let worker = null;
-    const detected = new Set();
+    let timer;
+    let isHolding = true;
+    let timeLeft = 0;
+    let currentRound = 1;
+    let totalRounds = 0;
 
-    // REGEX: 11-digit Bangladesh mobile numbers
-    const bdPattern = /(?:\+?88)?(01[3-9]\d{8})/g;
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    // Initialize Tesseract Worker once to save mobile memory
-    async function initWorker() {
-        if (!worker) {
-            statusEl.innerText = "Initializing Engine...";
-            worker = await Tesseract.createWorker('eng');
-        }
+    // Sound Function
+    function playTone(freq, duration, type = 'sine', vol = 0.1) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
     }
 
-    async function startScanner() {
-        await initWorker();
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { 
-                    facingMode: "environment",
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 }
-                } 
-            });
-            video.srcObject = stream;
-            video.play();
-            isScanning = true;
-            statusEl.innerText = "Active: Scanning...";
-            requestAnimationFrame(processLoop);
-        } catch (e) {
-            statusEl.innerText = "Camera Error";
-        }
-    }
+    const circle = document.getElementById('circle');
+    const statusText = document.getElementById('status-text');
+    const timerDisplay = document.getElementById('timer-display');
+    const startBtn = document.getElementById('startBtn');
+    const settingsPanel = document.getElementById('settings-panel');
+    const roundDisplay = document.getElementById('current-round');
+    const totalRoundDisplay = document.getElementById('total-rounds');
 
-    async function processLoop() {
-        if (!isScanning) return;
-
-        // Perform OCR every 2.5 seconds to save battery
-        const canvas = document.getElementById('proc-canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        canvas.getContext('2d').drawImage(video, 0, 0);
+    function startExercise() {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
         
-        try {
-            const { data: { text } } = await worker.recognize(canvas);
-            handleText(text);
-        } catch (e) { console.error(e); }
+        const hVal = parseInt(document.getElementById('holdInput').value);
+        const rVal = parseInt(document.getElementById('relaxInput').value);
+        totalRounds = parseInt(document.getElementById('roundInput').value);
 
-        if (isScanning) setTimeout(() => requestAnimationFrame(processLoop), 2500);
+        startBtn.disabled = true;
+        settingsPanel.style.visibility = "hidden";
+        totalRoundDisplay.innerText = totalRounds;
+        
+        currentRound = 1;
+        isHolding = true;
+        timeLeft = hVal;
+        
+        updateUI();
+        runTimer(hVal, rVal);
     }
 
-    function handleText(rawText) {
-        // Strip spaces/dashes for cleaner regex matching
-        const clean = rawText.replace(/[\s-]/g, '');
-        let match;
-        let found = false;
-
-        while ((match = bdPattern.exec(clean)) !== null) {
-            const num = match[1];
-            if (!detected.has(num)) {
-                detected.add(num);
-                renderNumber(num);
-                found = true;
+    function runTimer(holdTime, relaxTime) {
+        timer = setInterval(() => {
+            // Sound Logic
+            if (isHolding) {
+                // Squeeze sound - plays every second during hold
+                playTone(880, 0.1, 'sine', 0.05); 
             }
-        }
 
-        if (found) {
-            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-            copyAllBtn.style.display = 'block';
-        }
+            timeLeft--;
+            timerDisplay.innerText = timeLeft;
+
+            if (timeLeft <= 0) {
+                if (isHolding) {
+                    // Transition to Relax
+                    isHolding = false;
+                    timeLeft = relaxTime;
+                    // Relax sound - one time deep beep
+                    playTone(200, 0.8, 'triangle', 0.2); 
+                } else {
+                    // Transition to next Hold round
+                    if (currentRound >= totalRounds) {
+                        finishWorkout();
+                        return;
+                    }
+                    currentRound++;
+                    isHolding = true;
+                    timeLeft = holdTime;
+                    // Start hold sound
+                    playTone(660, 0.3, 'sine', 0.1);
+                }
+                updateUI();
+                if (navigator.vibrate) navigator.vibrate(150);
+            }
+        }, 1000);
     }
 
-    function renderNumber(num) {
-        const li = document.createElement('li');
-        li.className = 'number-row';
-        li.innerHTML = `
-            <strong>${num}</strong>
-            <button class="btn-copy-all" style="background:#444" onclick="copySingle('${num}')">Copy</button>
-        `;
-        listEl.prepend(li);
+    function updateUI() {
+        roundDisplay.innerText = currentRound;
+        if (isHolding) {
+            statusText.innerText = "SQUEEZE & HOLD";
+            statusText.style.color = "var(--hold-color)";
+            circle.className = "timer-circle hold-active";
+        } else {
+            statusText.innerText = "RELAX NOW";
+            statusText.style.color = "var(--relax-color)";
+            circle.className = "timer-circle relax-active";
+        }
+        timerDisplay.innerText = timeLeft;
     }
 
-    function stopScanner() {
-        if (video.srcObject) {
-            video.srcObject.getTracks().forEach(track => track.stop());
-        }
-        isScanning = false;
-        statusEl.innerText = "Stopped";
+    function finishWorkout() {
+        clearInterval(timer);
+        playTone(523, 0.5); setTimeout(() => playTone(659, 0.5), 150);
+        statusText.innerText = "DONE!";
+        statusText.style.color = "var(--accent)";
+        circle.className = "timer-circle";
+        timerDisplay.innerText = "🏆";
+        startBtn.disabled = false;
     }
 
-    document.getElementById('toggle-cam').addEventListener('click', () => {
-        if (isScanning) stopScanner(); else startScanner();
-    });
-
-    window.copySingle = (val) => {
-        navigator.clipboard.writeText(val);
-        statusEl.innerText = "Copied " + val;
-    };
-
-    copyAllBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText(Array.from(detected).join(', '));
-        statusEl.innerText = "All Copied!";
-    });
-
-    // File Upload Support
-    document.getElementById('file-up').addEventListener('change', async (e) => {
-        await initWorker();
-        const file = e.target.files[0];
-        if (file) {
-            statusEl.innerText = "Analyzing Image...";
-            const { data: { text } } = await worker.recognize(file);
-            handleText(text);
-        }
-    });
+    function resetApp() {
+        clearInterval(timer);
+        startBtn.disabled = false;
+        settingsPanel.style.visibility = "visible";
+        circle.className = "timer-circle";
+        statusText.innerText = "READY";
+        statusText.style.color = "var(--text-main)";
+        timerDisplay.innerText = "0";
+        roundDisplay.innerText = "0";
+    }
 </script>
+
 </body>
 </html>
