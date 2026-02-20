@@ -31,62 +31,60 @@
             font-size: 16px;
         }
 
-        /* --- Viewports --- */
-        .viewport { 
-            flex: 1; 
-            display: flex; 
-            flex-direction: column; 
-            overflow: hidden; 
-        }
-
-        /* --- Home View (Original Layout) --- */
-        #home-view { overflow-y: auto; display: flex; flex-direction: column; }
-        .home-header { padding: 40px 20px 20px; text-align: center; }
-        .home-header h1 { font-weight: 800; font-size: 2.5rem; margin: 0; letter-spacing: -1px; }
-        .portfolio-card { background: linear-gradient(135deg, #10b981, #059669); border-radius: 24px; margin: 0 20px 25px; padding: 28px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 15px 30px var(--accent-glow); }
-        .portfolio-value { font-size: 3rem; font-weight: 800; }
+        /* --- Home View (Original) --- */
+        .home-header { padding: clamp(30px, 8vw, 50px) 20px 20px; text-align: center; }
+        .home-header h1 { font-weight: 800; font-size: clamp(2rem, 8vw, 3rem); margin: 0; letter-spacing: -1px; }
+        .portfolio-card { background: linear-gradient(135deg, #10b981, #059669); border-radius: 24px; margin: 0 20px 25px; padding: 28px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.1); }
+        .portfolio-value { font-size: clamp(2.5rem, 9vw, 4rem); font-weight: 800; color: white; }
         .create-proj-box { background: var(--panel); margin: 0 20px 35px; padding: 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); display: flex; gap: 10px; }
-        #proj-name { flex-grow: 1; background: transparent; border: none; color: white; padding: 16px; font-size: 1.1rem; outline: none; }
+        #proj-name { flex-grow: 1; background: transparent; border: none; color: white; padding: 16px 18px; font-size: 1.1rem; outline: none; }
         .btn-create { background: var(--accent); color: black; border: none; padding: 16px 24px; border-radius: 14px; font-weight: 800; cursor: pointer; }
-
-        .proj-card { background: linear-gradient(145deg, #161b22, #0d1117); margin: 0 20px 16px; padding: 24px 20px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .proj-card { background: linear-gradient(145deg, #161b22, #0d1117); margin: 0 20px 16px; padding: 24px 20px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; position: relative; }
         .proj-name-text { font-size: 1.4rem; font-weight: 800; color: white; }
         .proj-total-amt { font-size: 2rem; font-weight: 800; color: var(--accent); }
-        .proj-menu-btn { width: 45px; height: 45px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 2rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; padding-bottom: 5px; }
-        .proj-menu { display: none; position: absolute; top: 60px; right: 20px; background: #1e1e1e; border-radius: 12px; padding: 10px 0; min-width: 140px; z-index: 1000; border: 1px solid rgba(255,255,255,0.1); }
-        .proj-menu-item { padding: 12px 20px; color: white; cursor: pointer; }
+        .proj-menu-btn { width: 52px; height: 52px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 2.5rem; border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .proj-menu { display: none; position: absolute; top: calc(100% + 10px); right: 20px; background: #1e1e1e; border-radius: 16px; padding: 10px 0; min-width: 150px; z-index: 1000; border: 1px solid rgba(255,255,255,0.1); }
+        .proj-menu-item { padding: 16px 20px; color: white; cursor: pointer; }
 
-        /* --- Calculator View (Bottom Oriented) --- */
-        #calc-view header { padding: env(safe-area-inset-top) 20px 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 12, 0.8); backdrop-filter: blur(10px); }
+        /* --- Calculator View (Centered Content) --- */
+        #calc-view { height: 100vh; display: flex; flex-direction: column; }
+        header { padding: env(safe-area-inset-top) 20px 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 12, 0.8); backdrop-filter: blur(10px); }
         .header-title { font-weight: 800; font-size: 1.3rem; color: var(--accent); }
-        .icon-btn { width: 50px; height: 50px; border-radius: 14px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .icon-btn { width: 52px; height: 52px; border-radius: 16px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 
-        .summary-card { background: linear-gradient(145deg, #161b22, #0d1117); border-radius: 24px; padding: 25px; text-align: center; margin: 15px 20px; border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; }
-        .total-large { display: block; font-size: 4rem; font-weight: 800; color: white; margin-top: 8px; text-shadow: 0 0 20px var(--accent-glow); }
+        /* Center Container */
+        .center-valuation-area {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-        /* This spacer will push inputs and keypad to bottom */
-        .calc-spacer { flex-grow: 1; }
+        .summary-card { text-align: center; padding: 20px; width: 100%; }
+        .label-sm { font-size: 0.9rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+        .total-large { display: block; font-size: clamp(3.5rem, 15vw, 5.5rem); font-weight: 800; color: white; margin-top: 10px; text-shadow: 0 0 30px var(--accent-glow); }
 
-        .bottom-section { margin-top: auto; display: flex; flex-direction: column; background: var(--bg); }
-        .input-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding: 0 20px 15px; }
-        .input-node { background: var(--panel); border-radius: 20px; padding: 20px 10px; text-align: center; border: 2px solid transparent; }
-        .input-node.active { border-color: var(--accent); background: #001517; box-shadow: 0 0 20px var(--accent-glow); }
+        /* Bottom Interaction Area */
+        .bottom-interaction { margin-top: auto; }
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; padding: 0 20px 20px; }
+        .input-node { background: var(--panel); border-radius: 22px; padding: 22px 10px; text-align: center; border: 2px solid transparent; }
+        .input-node.active { border-color: var(--accent); background: #001517; box-shadow: 0 0 25px var(--accent-glow); }
         .input-node.active.edit-mode { border-color: var(--edit-glow); background: #1a1400; }
-        .node-val { font-size: 2.2rem; font-weight: 700; color: white; margin-top: 5px; min-height: 2.6rem; }
+        .node-val { font-size: 2.4rem; font-weight: 700; color: white; margin-top: 8px; min-height: 2.8rem; }
 
-        .keypad-container { background: #000; padding: 5px 5px env(safe-area-inset-bottom); }
-        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(255,255,255,0.05); }
-        .key { background: var(--bg); border: none; color: white; padding: 24px 0; font-size: 2.2rem; font-weight: 500; outline: none; }
+        .keypad-container { background: #000; padding-bottom: env(safe-area-inset-bottom); }
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(255,255,255,0.05); padding: 5px; }
+        .key { background: var(--bg); border: none; color: white; padding: 22px 0; font-size: 2.2rem; font-weight: 500; outline: none; }
         .key:active { background: #1e2630; }
-        .key-main { grid-column: span 3; background: #000; color: white; padding: 26px 0; font-weight: 800; font-size: 1.4rem; border: 2px solid var(--accent); border-radius: 14px; margin: 5px; box-shadow: 0 0 15px var(--accent-glow); text-transform: uppercase; }
+        .key-main { grid-column: span 3; background: #000; color: white; padding: 26px 0; font-weight: 800; font-size: 1.4rem; border: 2px solid var(--accent); border-radius: 14px; margin: 6px 4px; box-shadow: 0 0 20px var(--accent-glow); text-transform: uppercase; }
         .key-main.edit-btn { border-color: var(--edit-glow); color: var(--edit-glow); }
 
-        /* Drawer & Lists */
-        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); opacity: 0; visibility: hidden; transition: 0.3s; z-index: 1000; }
+        /* Drawer */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); visibility: hidden; opacity: 0; transition: 0.3s; z-index: 1000; }
         .drawer { position: fixed; top: 0; right: -320px; width: 320px; height: 100%; background: #111; z-index: 1001; transition: 0.3s; display: flex; flex-direction: column; }
         .drawer.open { right: 0; }
-        .drawer-overlay.open { opacity: 1; visibility: visible; }
-        .entry-item { background: rgba(255,255,255,0.03); margin: 10px 15px; padding: 20px; border-radius: 18px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
+        .drawer-overlay.open { visibility: visible; opacity: 1; }
+        .entry-item { background: rgba(255,255,255,0.03); margin: 10px 15px; padding: 20px; border-radius: 18px; display: flex; justify-content: space-between; align-items: center; }
 
         .hidden { display: none !important; }
     </style>
@@ -99,7 +97,7 @@
         <p>Inventory Control Dashboard</p>
     </div>
     <div class="portfolio-card">
-        <span style="font-size: 0.9rem; color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase;">Portfolio Value</span>
+        <span style="text-transform: uppercase; font-weight: 600; color: rgba(255,255,255,0.8);">Net Inventory Value</span>
         <span class="portfolio-value" id="portfolio-total-amount">0.00</span>
     </div>
     <div class="create-proj-box">
@@ -109,53 +107,51 @@
     <div id="proj-list-container" style="flex: 1; overflow-y: auto;"></div>
 </div>
 
-<div id="calc-view" class="viewport hidden">
+<div id="calc-view" class="hidden">
     <header>
         <button class="icon-btn" onclick="exitToHome()">✕</button>
         <div class="header-title" id="active-title">CALCULATOR</div>
         <button class="icon-btn" onclick="toggleDrawer()">☰</button>
     </header>
 
-    <div class="viewport">
+    <div class="center-valuation-area">
         <div class="summary-card">
-            <span style="font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;">Project Valuation</span>
+            <label class="label-sm">Project Valuation</label>
             <span class="total-large" id="grand-total-display">0.00</span>
         </div>
+    </div>
 
-        <div class="calc-spacer"></div>
-
-        <div class="bottom-section">
-            <div class="input-grid">
-                <div class="input-node active" id="node-rate" onclick="setNode('rate')">
-                    <span style="font-size: 0.7rem; color: var(--text-dim);">BOX RATE</span>
-                    <div class="node-val" id="val-rate">0</div>
-                </div>
-                <div class="input-node" id="node-qty" onclick="setNode('qty')">
-                    <span style="font-size: 0.7rem; color: var(--text-dim);">QTY</span>
-                    <div class="node-val" id="val-qty">0</div>
-                </div>
-                <div class="input-node" id="node-stock" onclick="setNode('stock')">
-                    <span style="font-size: 0.7rem; color: var(--text-dim);">STOCK</span>
-                    <div class="node-val" id="val-stock">0</div>
-                </div>
+    <div class="bottom-interaction">
+        <div class="input-grid">
+            <div class="input-node active" id="node-rate" onclick="setNode('rate')">
+                <label class="label-sm" style="font-size:0.7rem">Box Rate</label>
+                <div class="node-val" id="val-rate">0</div>
             </div>
+            <div class="input-node" id="node-qty" onclick="setNode('qty')">
+                <label class="label-sm" style="font-size:0.7rem">Qty</label>
+                <div class="node-val" id="val-qty">0</div>
+            </div>
+            <div class="input-node" id="node-stock" onclick="setNode('stock')">
+                <label class="label-sm" style="font-size:0.7rem">Stock</label>
+                <div class="node-val" id="val-stock">0</div>
+            </div>
+        </div>
 
-            <div class="keypad-container">
-                <div class="keypad">
-                    <button class="key key-main" id="primary-action-btn" onclick="handleFlow()">NEXT FIELD</button>
-                    <button class="key" onclick="kp('7')">7</button>
-                    <button class="key" onclick="kp('8')">8</button>
-                    <button class="key" onclick="kp('9')">9</button>
-                    <button class="key" onclick="kp('4')">4</button>
-                    <button class="key" onclick="kp('5')">5</button>
-                    <button class="key" onclick="kp('6')">6</button>
-                    <button class="key" onclick="kp('1')">1</button>
-                    <button class="key" onclick="kp('2')">2</button>
-                    <button class="key" onclick="kp('3')">3</button>
-                    <button class="key" style="font-size: 1.2rem; color: var(--text-dim);" onclick="kd()">DEL</button>
-                    <button class="key" onclick="kp('0')">0</button>
-                    <button class="key" onclick="kp('.')">.</button>
-                </div>
+        <div class="keypad-container">
+            <div class="keypad">
+                <button class="key key-main" id="primary-action-btn" onclick="handleFlow()">NEXT FIELD</button>
+                <button class="key" onclick="kp('7')">7</button>
+                <button class="key" onclick="kp('8')">8</button>
+                <button class="key" onclick="kp('9')">9</button>
+                <button class="key" onclick="kp('4')">4</button>
+                <button class="key" onclick="kp('5')">5</button>
+                <button class="key" onclick="kp('6')">6</button>
+                <button class="key" onclick="kp('1')">1</button>
+                <button class="key" onclick="kp('2')">2</button>
+                <button class="key" onclick="kp('3')">3</button>
+                <button class="key" style="font-size: 1.2rem; color: var(--text-dim);" onclick="kd()">DEL</button>
+                <button class="key" onclick="kp('0')">0</button>
+                <button class="key" onclick="kp('.')">.</button>
             </div>
         </div>
     </div>
@@ -164,39 +160,59 @@
 <div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
 <div class="drawer" id="side-drawer">
     <div style="padding: 40px 20px 20px;">
-        <span style="font-size: 0.8rem; color: var(--text-dim);">TOTAL VALUATION</span>
+        <label class="label-sm">Total Valuation</label>
         <div style="font-size: 2.2rem; font-weight: 800; color: var(--accent);" id="drawer-gt">0.00</div>
     </div>
     <div id="records-list" style="flex: 1; overflow-y: auto;"></div>
-    <button onclick="toggleDrawer()" style="margin: 20px; padding: 18px; border-radius: 15px; background: #333; color: white; border: none; font-weight: 600;">CLOSE</button>
+    <button onclick="toggleDrawer()" style="margin: 20px; padding: 18px; border-radius: 15px; background: #333; color: white; border: none;">CLOSE</button>
 </div>
 
 <script>
-    /* Original Systems Restored */
+    /* Original Logic Restored */
     let appData = JSON.parse(localStorage.getItem('pharma_elite_v1')) || [];
     let curID = null, editID = null, activeNode = 'rate';
     let inputStates = { rate: '', qty: '', stock: '' };
+    let currentOpenMenu = null;
 
     function save() { localStorage.setItem('pharma_elite_v1', JSON.stringify(appData)); }
 
     function renderHomeList() {
         const container = document.getElementById('proj-list-container');
-        container.innerHTML = appData.slice().reverse().map(p => {
+        const sortedData = [...appData].sort((a, b) => b.id - a.id);
+        container.innerHTML = sortedData.map(p => {
             const total = p.entries.reduce((sum, e) => sum + parseFloat(e.val), 0);
-            return `
-                <div class="proj-card" onclick="openProject(${p.id})">
-                    <div style="flex:1">
-                        <span class="proj-name-text">${p.name}</span><br>
-                        <small style="color:var(--text-dim)">${p.entries.length} items indexed</small>
-                    </div>
-                    <div style="text-align:right">
-                        <span class="proj-total-amt">${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+            return `<div class="proj-card" onclick="openProject(${p.id})">
+                <div style="flex:1">
+                    <span class="proj-name-text">${p.name}</span>
+                    <span style="display:block; color:var(--text-dim); font-size:0.9rem;">${p.entries.length} items</span>
+                </div>
+                <div style="text-align:right">
+                    <span class="proj-total-amt">${total.toLocaleString(undefined,{minimumFractionDigits:2})}</span>
+                </div>
+                <div class="proj-menu-container" onclick="event.stopPropagation()">
+                    <button class="proj-menu-btn" onclick="toggleProjectMenu(event, ${p.id})">⋮</button>
+                    <div class="proj-menu" id="proj-menu-${p.id}">
+                        <div class="proj-menu-item" onclick="deleteProject(${p.id})">Delete</div>
                     </div>
                 </div>
-            `;
+            </div>`;
         }).join('');
         const portTotal = appData.reduce((s, p) => s + p.entries.reduce((ss, e) => ss + parseFloat(e.val), 0), 0);
-        document.getElementById('portfolio-total-amount').innerText = portTotal.toLocaleString(undefined, {minimumFractionDigits: 2});
+        document.getElementById('portfolio-total-amount').innerText = portTotal.toLocaleString(undefined,{minimumFractionDigits:2});
+    }
+
+    function toggleProjectMenu(e, id) {
+        e.stopPropagation();
+        const menu = document.getElementById(`proj-menu-${id}`);
+        if(currentOpenMenu && currentOpenMenu !== menu) currentOpenMenu.style.display = 'none';
+        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        currentOpenMenu = menu;
+    }
+
+    function deleteProject(id) {
+        if(!confirm('Delete project?')) return;
+        appData = appData.filter(p => p.id !== id);
+        save(); renderHomeList();
     }
 
     function newProject() {
@@ -223,7 +239,7 @@
 
     function setNode(node) {
         activeNode = node;
-        document.querySelectorAll('.input-node').forEach(n => n.classList.remove('active', 'edit-mode'));
+        document.querySelectorAll('.input-node').forEach(n => n.classList.remove('active','edit-mode'));
         const el = document.getElementById(`node-${node}`);
         el.classList.add('active');
         if(editID) el.classList.add('edit-mode');
@@ -250,8 +266,7 @@
     function performSave() {
         const r = parseFloat(inputStates.rate), q = parseFloat(inputStates.qty), s = parseFloat(inputStates.stock);
         if(!r || !q || isNaN(s)) return;
-        const entry = { id: Date.now(), r, q, s, val: ((r/q)*s).toFixed(2) };
-        appData.find(x => x.id === curID).entries.unshift(entry);
+        appData.find(x => x.id === curID).entries.unshift({ id: Date.now(), r, q, s, val: ((r/q)*s).toFixed(2) });
         save(); resetCalculator(); renderRecords();
     }
 
@@ -288,7 +303,7 @@
     }
 
     function deleteEntry(eid) {
-        if(!confirm('Delete?')) return;
+        if(!confirm('Delete entry?')) return;
         const p = appData.find(x => x.id === curID);
         p.entries = p.entries.filter(e => e.id !== eid);
         save(); renderRecords();
