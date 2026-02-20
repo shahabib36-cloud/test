@@ -8,11 +8,11 @@
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
 
         :root {
-            --bg: #0a0c10;                /* deep carbon */
-            --panel: #14181f;              /* dark navy gray */
-            --accent: #10b981;              /* vibrant emerald */
+            --bg: #0a0c10;                
+            --panel: #14181f;              
+            --accent: #10b981;              
             --accent-glow: rgba(16, 185, 129, 0.2);
-            --edit-glow: #f59e0b;           /* amber gold */
+            --edit-glow: #f59e0b;           
             --text-dim: #94a3b8;
             --glass: rgba(255, 255, 255, 0.03);
             --danger: #ff4d4d;
@@ -28,326 +28,67 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            font-size: 16px; /* base for rem */
+            font-size: 16px;
         }
 
-        /* --- Updated Home View Styling --- */
-        .home-header {
-            padding: clamp(30px, 8vw, 50px) 20px 20px;
-            text-align: center;
-        }
-
-        .home-header h1 {
-            font-weight: 800;
-            font-size: clamp(2rem, 8vw, 3rem);
-            margin: 0;
-            letter-spacing: -1px;
-        }
-
-        .home-header p {
-            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
-        }
-
-        /* --- Premium Portfolio Card --- */
-        .portfolio-card {
-            background: linear-gradient(135deg, #10b981, #059669);
-            border-radius: 24px;
-            margin: 0 20px 25px;
-            padding: 28px 28px;
-            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.25);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .portfolio-label {
-            font-size: clamp(0.8rem, 3vw, 1rem);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-            color: rgba(255,255,255,0.9);
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .portfolio-value {
-            font-size: clamp(2.5rem, 9vw, 4rem);
-            font-weight: 800;
-            line-height: 1.2;
-            color: white;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-
-        .create-proj-box {
-            background: var(--panel);
-            margin: 0 20px 35px;
-            padding: 10px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.08);
-            display: flex;
-            gap: 10px;
-        }
-
-        #proj-name {
-            flex-grow: 1;
-            background: transparent;
-            border: none;
-            color: white;
-            padding: 16px 18px;
-            font-size: clamp(1rem, 4vw, 1.2rem);
-            outline: none;
-        }
-
-        .btn-create {
-            background: var(--accent);
-            color: black;
-            border: none;
-            padding: 16px 24px;
-            border-radius: 14px;
-            font-weight: 800;
-            font-size: clamp(0.9rem, 3.5vw, 1rem);
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: transform 0.1s ease;
-        }
-        .btn-create:active { transform: scale(0.96); }
-
-        /* Project Card — bigger & bolder */
-        .proj-card {
-            background: linear-gradient(145deg, #161b22, #0d1117);
-            margin: 0 20px 16px;
-            padding: 24px 20px;
-            border-radius: 22px;
-            border: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.15s ease;
-            position: relative;
-        }
-
-        .proj-card:active { transform: scale(0.98); background: #1c222b; }
-
-        .proj-left {
-            flex: 1;
-            border-right: 1px solid rgba(255,255,255,0.1);
-            text-align: left;
-            padding-right: 16px;
-        }
-
-        .proj-name-text { 
-            font-size: clamp(1.2rem, 5vw, 1.6rem); 
-            font-weight: 800; 
-            color: white; 
-            display: block; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-        }
-        .proj-item-count { 
-            font-size: clamp(0.8rem, 3vw, 1rem); 
-            color: var(--text-dim); 
-            display: block;
-            margin-top: 6px;
-        }
-
-        .proj-right {
-            flex: 1;
-            text-align: right;
-            padding-left: 16px;
-        }
-
-        .proj-total-label { 
-            font-size: clamp(0.7rem, 2.5vw, 0.9rem); 
-            color: var(--text-dim); 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            display: block; 
-        }
-        .proj-total-amt { 
-            font-size: clamp(1.6rem, 7vw, 2.4rem); 
-            font-weight: 800; 
-            color: var(--accent); 
-            display: block; 
-            line-height: 1.2;
-        }
-
-        /* three-dots — bigger tap area */
-        .proj-menu-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            margin-left: 10px;
-            flex-shrink: 0;
-        }
-
-        .proj-menu-btn {
-            width: 52px;
-            height: 52px;
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 2.5rem;
-            line-height: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border-radius: 16px;
-            background: var(--glass);
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: transform 0.1s ease, background 0.2s;
-            padding: 0;
-        }
-        .proj-menu-btn:active {
-            background: #1c222b;
-            transform: scale(0.94);
-        }
-
-        .proj-menu {
-            display: none;
-            position: absolute;
-            top: calc(100% + 10px);
-            right: 0;
-            background: #1e1e1e;
-            border-radius: 16px;
-            padding: 10px 0;
-            min-width: 150px;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.7);
-            border: 1px solid rgba(255,255,255,0.1);
-            z-index: 1000;
-        }
-
-        .proj-menu-item {
-            padding: 16px 20px;
-            color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.2s;
-            text-align: left;
-            font-weight: 400;
-        }
-
-        .proj-menu-item:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        /* --- Header & Calculator Navigation --- */
-        header {
-            padding: env(safe-area-inset-top) 20px 15px;
-            background: rgba(8, 10, 12, 0.8);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            z-index: 100;
-        }
-
-        .header-title { font-weight: 800; font-size: clamp(1.1rem, 4vw, 1.5rem); letter-spacing: 1px; color: var(--accent); }
-        .icon-btn { 
-            width: 52px; height: 52px; 
-            border-radius: 16px; 
-            background: var(--glass);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: white;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: transform 0.1s ease;
-        }
-        .icon-btn:active { transform: scale(0.94); background: #1c222b; }
-
-        /* --- Main Calculator Display --- */
+        /* --- Viewports --- */
         .viewport { 
-            flex-grow: 1; 
+            flex: 1; 
             display: flex; 
             flex-direction: column; 
-            overflow-y: auto; 
-            /* padding-bottom removed – now handled by keypad-container */ 
-        }
-        
-        .summary-card {
-            background: linear-gradient(145deg, #161b22, #0d1117);
-            border-radius: 28px;
-            padding: 30px 25px;
-            text-align: center;
-            margin: 15px 20px 25px;
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            overflow: hidden; 
         }
 
-        .label-sm { font-size: clamp(0.75rem, 3vw, 0.9rem); color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
-        .total-large { display: block; font-size: clamp(3rem, 12vw, 5rem); font-weight: 800; color: white; margin-top: 8px; text-shadow: 0 0 20px var(--accent-glow); }
+        /* --- Home View (Original Layout) --- */
+        #home-view { overflow-y: auto; display: flex; flex-direction: column; }
+        .home-header { padding: 40px 20px 20px; text-align: center; }
+        .home-header h1 { font-weight: 800; font-size: 2.5rem; margin: 0; letter-spacing: -1px; }
+        .portfolio-card { background: linear-gradient(135deg, #10b981, #059669); border-radius: 24px; margin: 0 20px 25px; padding: 28px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 15px 30px var(--accent-glow); }
+        .portfolio-value { font-size: 3rem; font-weight: 800; }
+        .create-proj-box { background: var(--panel); margin: 0 20px 35px; padding: 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); display: flex; gap: 10px; }
+        #proj-name { flex-grow: 1; background: transparent; border: none; color: white; padding: 16px; font-size: 1.1rem; outline: none; }
+        .btn-create { background: var(--accent); color: black; border: none; padding: 16px 24px; border-radius: 14px; font-weight: 800; cursor: pointer; }
 
-        .input-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; padding: 0 20px; }
-        
-        .input-node {
-            background: var(--panel);
-            border-radius: 24px;
-            padding: 26px 12px;
-            text-align: center;
-            border: 2px solid transparent;
-            transition: 0.2s;
-            cursor: pointer;
-        }
+        .proj-card { background: linear-gradient(145deg, #161b22, #0d1117); margin: 0 20px 16px; padding: 24px 20px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .proj-name-text { font-size: 1.4rem; font-weight: 800; color: white; }
+        .proj-total-amt { font-size: 2rem; font-weight: 800; color: var(--accent); }
+        .proj-menu-btn { width: 45px; height: 45px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 2rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; padding-bottom: 5px; }
+        .proj-menu { display: none; position: absolute; top: 60px; right: 20px; background: #1e1e1e; border-radius: 12px; padding: 10px 0; min-width: 140px; z-index: 1000; border: 1px solid rgba(255,255,255,0.1); }
+        .proj-menu-item { padding: 12px 20px; color: white; cursor: pointer; }
 
-        .input-node.active { border-color: var(--accent); background: #001517; box-shadow: 0 0 30px var(--accent-glow); transform: translateY(-4px); }
-        .input-node.active.edit-mode { border-color: var(--edit-glow); background: #1a1400; box-shadow: 0 0 30px rgba(245, 158, 11, 0.3); }
+        /* --- Calculator View (Bottom Oriented) --- */
+        #calc-view header { padding: env(safe-area-inset-top) 20px 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 12, 0.8); backdrop-filter: blur(10px); }
+        .header-title { font-weight: 800; font-size: 1.3rem; color: var(--accent); }
+        .icon-btn { width: 50px; height: 50px; border-radius: 14px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 
-        .node-val { font-size: clamp(2rem, 8vw, 2.8rem); font-weight: 700; color: white; margin-top: 10px; min-height: 2.5rem; }
+        .summary-card { background: linear-gradient(145deg, #161b22, #0d1117); border-radius: 24px; padding: 25px; text-align: center; margin: 15px 20px; border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; }
+        .total-large { display: block; font-size: 4rem; font-weight: 800; color: white; margin-top: 8px; text-shadow: 0 0 20px var(--accent-glow); }
 
-        /* --- Keypad with PREMIUM black action button --- */
-        .keypad-container { 
-            background: #000; 
-            margin-top: auto; 
-            padding-bottom: max(env(safe-area-inset-bottom), 12px); /* stick to bottom with safe area */
-        }
-        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(255,255,255,0.05); padding: 6px; }
-        .key { background: var(--bg); border: none; color: white; padding: 24px 0; font-size: clamp(2rem, 7vw, 2.5rem); font-weight: 500; outline: none; cursor: pointer; transition: transform 0.1s ease, background 0.1s; }
-        .key:active { background: #1e2630; transform: scale(0.94); }
-        .key-action { font-size: clamp(1rem, 4vw, 1.3rem); color: var(--text-dim); font-weight: 700; }
+        /* This spacer will push inputs and keypad to bottom */
+        .calc-spacer { flex-grow: 1; }
 
-        /* 🖤 PREMIUM BLACK BUTTON — extra glow, thicker */
-        .key-main {
-            grid-column: span 3;
-            background: #000000;
-            color: white;
-            padding: 28px 0;
-            font-weight: 800;
-            font-size: clamp(1.3rem, 5vw, 1.8rem);
-            cursor: pointer;
-            border: 2px solid var(--accent);
-            box-shadow: 0 0 30px var(--accent-glow), 0 0 15px rgba(16, 185, 129, 0.6);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: transform 0.1s ease, box-shadow 0.2s;
-            border-radius: 14px;
-            margin: 6px 3px;
-        }
-        .key-main:active {
-            transform: scale(0.96);
-            background: #0f0f0f;
-            box-shadow: 0 0 45px var(--accent);
-        }
-        .key-main.edit-btn {
-            border-color: var(--edit-glow);
-            box-shadow: 0 0 30px rgba(245, 158, 11, 0.7);
-            color: var(--edit-glow);
-        }
-        .key-main.edit-btn:active {
-            box-shadow: 0 0 45px var(--edit-glow);
-        }
+        .bottom-section { margin-top: auto; display: flex; flex-direction: column; background: var(--bg); }
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding: 0 20px 15px; }
+        .input-node { background: var(--panel); border-radius: 20px; padding: 20px 10px; text-align: center; border: 2px solid transparent; }
+        .input-node.active { border-color: var(--accent); background: #001517; box-shadow: 0 0 20px var(--accent-glow); }
+        .input-node.active.edit-mode { border-color: var(--edit-glow); background: #1a1400; }
+        .node-val { font-size: 2.2rem; font-weight: 700; color: white; margin-top: 5px; min-height: 2.6rem; }
 
-        /* --- Drawer --- */
-        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); opacity: 0; visibility: hidden; transition: 0.4s; z-index: 1000; }
-        .drawer { position: fixed; top: 0; right: -340px; width: 340px; height: 100%; background: #111; z-index: 1001; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); }
+        .keypad-container { background: #000; padding: 5px 5px env(safe-area-inset-bottom); }
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(255,255,255,0.05); }
+        .key { background: var(--bg); border: none; color: white; padding: 24px 0; font-size: 2.2rem; font-weight: 500; outline: none; }
+        .key:active { background: #1e2630; }
+        .key-main { grid-column: span 3; background: #000; color: white; padding: 26px 0; font-weight: 800; font-size: 1.4rem; border: 2px solid var(--accent); border-radius: 14px; margin: 5px; box-shadow: 0 0 15px var(--accent-glow); text-transform: uppercase; }
+        .key-main.edit-btn { border-color: var(--edit-glow); color: var(--edit-glow); }
+
+        /* Drawer & Lists */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); opacity: 0; visibility: hidden; transition: 0.3s; z-index: 1000; }
+        .drawer { position: fixed; top: 0; right: -320px; width: 320px; height: 100%; background: #111; z-index: 1001; transition: 0.3s; display: flex; flex-direction: column; }
         .drawer.open { right: 0; }
         .drawer-overlay.open { opacity: 1; visibility: visible; }
-        .entry-item { background: rgba(255,255,255,0.03); margin: 12px 18px; padding: 22px 20px; border-radius: 22px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
+        .entry-item { background: rgba(255,255,255,0.03); margin: 10px 15px; padding: 20px; border-radius: 18px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
 
-        .hidden { display: none; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -357,24 +98,18 @@
         <h1>PHARMA<span style="color:var(--accent)">ELITE</span></h1>
         <p>Inventory Control Dashboard</p>
     </div>
-
-    <!-- Premium Portfolio Card (Net Inventory Value) -->
-    <div class="portfolio-card" id="portfolio-total-card">
-        <span class="portfolio-label">Net Inventory Value</span>
+    <div class="portfolio-card">
+        <span style="font-size: 0.9rem; color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase;">Portfolio Value</span>
         <span class="portfolio-value" id="portfolio-total-amount">0.00</span>
     </div>
-    
     <div class="create-proj-box">
         <input type="text" id="proj-name" placeholder="Enter Company Name...">
         <button class="btn-create" onclick="newProject()">Create</button>
     </div>
-
-    <div id="proj-list-container">
-        <!-- dynamically populated -->
-    </div>
+    <div id="proj-list-container" style="flex: 1; overflow-y: auto;"></div>
 </div>
 
-<div id="calc-view" class="hidden">
+<div id="calc-view" class="viewport hidden">
     <header>
         <button class="icon-btn" onclick="exitToHome()">✕</button>
         <div class="header-title" id="active-title">CALCULATOR</div>
@@ -383,41 +118,44 @@
 
     <div class="viewport">
         <div class="summary-card">
-            <label class="label-sm">Project Valuation</label>
+            <span style="font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;">Project Valuation</span>
             <span class="total-large" id="grand-total-display">0.00</span>
         </div>
 
-        <div class="input-grid">
-            <div class="input-node active" id="node-rate" onclick="setNode('rate')">
-                <label class="label-sm">Box Rate</label>
-                <div class="node-val" id="val-rate"></div>
-            </div>
-            <div class="input-node" id="node-qty" onclick="setNode('qty')">
-                <label class="label-sm">Qty</label>
-                <div class="node-val" id="val-qty"></div>
-            </div>
-            <div class="input-node" id="node-stock" onclick="setNode('stock')">
-                <label class="label-sm">Stock</label>
-                <div class="node-val" id="val-stock"></div>
-            </div>
-        </div>
+        <div class="calc-spacer"></div>
 
-        <div class="keypad-container">
-            <div class="keypad">
-                <!-- Primary action button at top (thick & glowing) -->
-                <button class="key key-main" id="primary-action-btn" onclick="handleFlow()">NEXT FIELD</button>
-                <button class="key" onclick="kp('7')">7</button>
-                <button class="key" onclick="kp('8')">8</button>
-                <button class="key" onclick="kp('9')">9</button>
-                <button class="key" onclick="kp('4')">4</button>
-                <button class="key" onclick="kp('5')">5</button>
-                <button class="key" onclick="kp('6')">6</button>
-                <button class="key" onclick="kp('1')">1</button>
-                <button class="key" onclick="kp('2')">2</button>
-                <button class="key" onclick="kp('3')">3</button>
-                <button class="key key-action" onclick="kd()">DEL</button>
-                <button class="key" onclick="kp('0')">0</button>
-                <button class="key key-action" onclick="kp('.')">.</button>
+        <div class="bottom-section">
+            <div class="input-grid">
+                <div class="input-node active" id="node-rate" onclick="setNode('rate')">
+                    <span style="font-size: 0.7rem; color: var(--text-dim);">BOX RATE</span>
+                    <div class="node-val" id="val-rate">0</div>
+                </div>
+                <div class="input-node" id="node-qty" onclick="setNode('qty')">
+                    <span style="font-size: 0.7rem; color: var(--text-dim);">QTY</span>
+                    <div class="node-val" id="val-qty">0</div>
+                </div>
+                <div class="input-node" id="node-stock" onclick="setNode('stock')">
+                    <span style="font-size: 0.7rem; color: var(--text-dim);">STOCK</span>
+                    <div class="node-val" id="val-stock">0</div>
+                </div>
+            </div>
+
+            <div class="keypad-container">
+                <div class="keypad">
+                    <button class="key key-main" id="primary-action-btn" onclick="handleFlow()">NEXT FIELD</button>
+                    <button class="key" onclick="kp('7')">7</button>
+                    <button class="key" onclick="kp('8')">8</button>
+                    <button class="key" onclick="kp('9')">9</button>
+                    <button class="key" onclick="kp('4')">4</button>
+                    <button class="key" onclick="kp('5')">5</button>
+                    <button class="key" onclick="kp('6')">6</button>
+                    <button class="key" onclick="kp('1')">1</button>
+                    <button class="key" onclick="kp('2')">2</button>
+                    <button class="key" onclick="kp('3')">3</button>
+                    <button class="key" style="font-size: 1.2rem; color: var(--text-dim);" onclick="kd()">DEL</button>
+                    <button class="key" onclick="kp('0')">0</button>
+                    <button class="key" onclick="kp('.')">.</button>
+                </div>
             </div>
         </div>
     </div>
@@ -425,146 +163,47 @@
 
 <div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
 <div class="drawer" id="side-drawer">
-    <div style="padding: 40px 20px 20px; background: rgba(255,255,255,0.02);">
-        <label class="label-sm">Total Valuation</label>
+    <div style="padding: 40px 20px 20px;">
+        <span style="font-size: 0.8rem; color: var(--text-dim);">TOTAL VALUATION</span>
         <div style="font-size: 2.2rem; font-weight: 800; color: var(--accent);" id="drawer-gt">0.00</div>
     </div>
-    <div id="records-list" style="flex-grow: 1; overflow-y: auto; padding-bottom: 20px;"></div>
-    <div style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
-        <button onclick="toggleDrawer()" style="width: 100%; padding: 18px; border-radius: 16px; background: #333; color: white; border: none; font-weight: 600; font-size: 1rem; cursor: pointer; transition: transform 0.1s;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">CLOSE</button>
-    </div>
+    <div id="records-list" style="flex: 1; overflow-y: auto;"></div>
+    <button onclick="toggleDrawer()" style="margin: 20px; padding: 18px; border-radius: 15px; background: #333; color: white; border: none; font-weight: 600;">CLOSE</button>
 </div>
 
 <script>
+    /* Original Systems Restored */
     let appData = JSON.parse(localStorage.getItem('pharma_elite_v1')) || [];
-    let curID = null;
-    let editID = null;
-    let activeNode = 'rate';
+    let curID = null, editID = null, activeNode = 'rate';
     let inputStates = { rate: '', qty: '', stock: '' };
-    let currentOpenMenu = null; // track which project menu is open
 
-    // ----- HOME VIEW: RENDER PROJECT LIST + PORTFOLIO TOTAL -----
+    function save() { localStorage.setItem('pharma_elite_v1', JSON.stringify(appData)); }
+
     function renderHomeList() {
         const container = document.getElementById('proj-list-container');
-        // Close any open menu before re-render
-        if (currentOpenMenu) {
-            currentOpenMenu.style.display = 'none';
-            currentOpenMenu = null;
-        }
-        // Sort: Most Recent (Highest ID) at Top
-        const sortedData = [...appData].sort((a, b) => b.id - a.id);
-        
-        container.innerHTML = sortedData.map(p => {
-            // Calculate project grand total on the fly
+        container.innerHTML = appData.slice().reverse().map(p => {
             const total = p.entries.reduce((sum, e) => sum + parseFloat(e.val), 0);
-            const formattedTotal = total.toLocaleString(undefined, {minimumFractionDigits: 2});
-
             return `
-                <div class="proj-card" data-id="${p.id}" onclick="openProject(${p.id})">
-                    <!-- LEFT: Project name + item count -->
-                    <div class="proj-left">
-                        <span class="proj-name-text">${p.name}</span>
-                        <span class="proj-item-count">${p.entries.length} items indexed</span>
+                <div class="proj-card" onclick="openProject(${p.id})">
+                    <div style="flex:1">
+                        <span class="proj-name-text">${p.name}</span><br>
+                        <small style="color:var(--text-dim)">${p.entries.length} items indexed</small>
                     </div>
-                    <!-- RIGHT: Grand total -->
-                    <div class="proj-right">
-                        <span class="proj-total-label">Grand Total</span>
-                        <span class="proj-total-amt">${formattedTotal}</span>
-                    </div>
-                    <!-- Three-dots menu container (stop propagation to avoid opening project) -->
-                    <div class="proj-menu-container" onclick="event.stopPropagation()">
-                        <button class="proj-menu-btn" onclick="toggleProjectMenu(event, ${p.id})">⋮</button>
-                        <div class="proj-menu" id="proj-menu-${p.id}">
-                            <div class="proj-menu-item" onclick="event.stopPropagation(); editProject(${p.id})">Edit Name</div>
-                            <div class="proj-menu-item" onclick="event.stopPropagation(); deleteProject(${p.id})">Delete</div>
-                        </div>
+                    <div style="text-align:right">
+                        <span class="proj-total-amt">${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
                     </div>
                 </div>
             `;
         }).join('');
-
-        // Update the Net Inventory Value card (sum of all project grand totals)
-        const portfolioTotal = appData.reduce((sum, p) => {
-            return sum + p.entries.reduce((sub, e) => sub + parseFloat(e.val), 0);
-        }, 0);
-        document.getElementById('portfolio-total-amount').innerText = 
-            portfolioTotal.toLocaleString(undefined, {minimumFractionDigits: 2});
-    }
-
-    // ----- PROJECT MENU (three-dots) -----
-    function toggleProjectMenu(event, projectId) {
-        event.stopPropagation();
-        const menu = document.getElementById(`proj-menu-${projectId}`);
-        if (!menu) return;
-
-        // close any other open menu
-        if (currentOpenMenu && currentOpenMenu !== menu) {
-            currentOpenMenu.style.display = 'none';
-        }
-
-        // toggle current menu
-        if (menu.style.display === 'block') {
-            menu.style.display = 'none';
-            currentOpenMenu = null;
-        } else {
-            menu.style.display = 'block';
-            currentOpenMenu = menu;
-        }
-    }
-
-    // Global click to close any open menu
-    document.addEventListener('click', function(e) {
-        if (currentOpenMenu && !currentOpenMenu.contains(e.target) && !e.target.closest('.proj-menu-btn')) {
-            currentOpenMenu.style.display = 'none';
-            currentOpenMenu = null;
-        }
-    });
-
-    // ----- EDIT PROJECT (prompt) -----
-    function editProject(id) {
-        const project = appData.find(p => p.id === id);
-        if (!project) return;
-        const newName = prompt('Edit project name:', project.name);
-        if (newName && newName.trim() !== '') {
-            project.name = newName.trim().toUpperCase();
-            save();
-            renderHomeList();
-            // If this project is currently open in calculator, update header
-            if (curID === id) {
-                document.getElementById('active-title').innerText = project.name;
-            }
-        }
-        // close menu (will be removed by re-render anyway)
-    }
-
-    // ----- DELETE PROJECT (confirm) -----
-    function deleteProject(id) {
-        if (!confirm('Delete this project and all its entries?')) return;
-        appData = appData.filter(p => p.id !== id);
-        save();
-        renderHomeList();
-        // If the deleted project was open, return to home
-        if (curID === id) {
-            exitToHome();
-        }
-    }
-
-    // ----- EXISTING FUNCTIONS (calculator logic untouched) -----
-    function exitToHome() {
-        document.getElementById('home-view').classList.remove('hidden');
-        document.getElementById('calc-view').classList.add('hidden');
-        curID = null; // reset current project
-        renderHomeList();
+        const portTotal = appData.reduce((s, p) => s + p.entries.reduce((ss, e) => ss + parseFloat(e.val), 0), 0);
+        document.getElementById('portfolio-total-amount').innerText = portTotal.toLocaleString(undefined, {minimumFractionDigits: 2});
     }
 
     function newProject() {
         const name = document.getElementById('proj-name').value;
         if(!name) return;
-        const proj = { id: Date.now(), name: name.toUpperCase(), entries: [] };
-        appData.push(proj);
-        save();
-        document.getElementById('proj-name').value = '';
-        renderHomeList();
+        appData.push({ id: Date.now(), name: name.toUpperCase(), entries: [] });
+        save(); document.getElementById('proj-name').value = ''; renderHomeList();
     }
 
     function openProject(id) {
@@ -573,33 +212,24 @@
         document.getElementById('active-title').innerText = p.name;
         document.getElementById('home-view').classList.add('hidden');
         document.getElementById('calc-view').classList.remove('hidden');
-        resetCalculator();
-        renderRecords();
+        resetCalculator(); renderRecords();
     }
 
-    function toggleDrawer() {
-        document.getElementById('side-drawer').classList.toggle('open');
-        document.getElementById('drawer-overlay').classList.toggle('open');
+    function exitToHome() {
+        document.getElementById('home-view').classList.remove('hidden');
+        document.getElementById('calc-view').classList.add('hidden');
+        renderHomeList();
     }
 
     function setNode(node) {
         activeNode = node;
-        document.querySelectorAll('.input-node').forEach(n => {
-            n.classList.remove('active');
-            n.classList.remove('edit-mode');
-        });
+        document.querySelectorAll('.input-node').forEach(n => n.classList.remove('active', 'edit-mode'));
         const el = document.getElementById(`node-${node}`);
         el.classList.add('active');
         if(editID) el.classList.add('edit-mode');
-
         const btn = document.getElementById('primary-action-btn');
-        if(editID) {
-            btn.innerText = "CONFIRM UPDATE";
-            btn.classList.add('edit-btn');
-        } else {
-            btn.classList.remove('edit-btn');
-            btn.innerText = (node === 'stock') ? "SAVE ENTRY" : "NEXT FIELD";
-        }
+        btn.innerText = editID ? "CONFIRM" : (node === 'stock' ? "SAVE ENTRY" : "NEXT FIELD");
+        btn.className = editID ? 'key key-main edit-btn' : 'key key-main';
     }
 
     function kp(n) { inputStates[activeNode] += n; refreshInputUI(); }
@@ -612,11 +242,9 @@
 
     function handleFlow() {
         if(editID) finishUpdate();
-        else {
-            if(activeNode === 'rate') setNode('qty');
-            else if(activeNode === 'qty') setNode('stock');
-            else performSave();
-        }
+        else if(activeNode === 'rate') setNode('qty');
+        else if(activeNode === 'qty') setNode('stock');
+        else performSave();
     }
 
     function performSave() {
@@ -625,6 +253,22 @@
         const entry = { id: Date.now(), r, q, s, val: ((r/q)*s).toFixed(2) };
         appData.find(x => x.id === curID).entries.unshift(entry);
         save(); resetCalculator(); renderRecords();
+    }
+
+    function renderRecords() {
+        const p = appData.find(x => x.id === curID);
+        const container = document.getElementById('records-list');
+        let gt = 0;
+        container.innerHTML = p.entries.map(e => {
+            gt += parseFloat(e.val);
+            return `<div class="entry-item" onclick="initiateEdit(${e.id})">
+                <div><small>R:${e.r} | Q:${e.q} | S:${e.s}</small><div style="font-weight:700; color:var(--accent); font-size:1.5rem;">${e.val}</div></div>
+                <button onclick="event.stopPropagation(); deleteEntry(${e.id})" style="background:none; border:none; color:var(--danger); font-size:1.5rem;">✕</button>
+            </div>`;
+        }).join('');
+        const fmt = gt.toLocaleString(undefined, {minimumFractionDigits: 2});
+        document.getElementById('grand-total-display').innerText = fmt;
+        document.getElementById('drawer-gt').innerText = fmt;
     }
 
     function initiateEdit(eid) {
@@ -643,35 +287,16 @@
         save(); resetCalculator(); renderRecords();
     }
 
-    function resetCalculator() {
-        inputStates = { rate: '', qty: '', stock: '' };
-        editID = null; refreshInputUI(); setNode('rate');
-    }
-
-    function save() { localStorage.setItem('pharma_elite_v1', JSON.stringify(appData)); }
-
-    function renderRecords() {
-        const p = appData.find(x => x.id === curID);
-        if (!p) return;
-        const container = document.getElementById('records-list');
-        let gt = 0;
-        container.innerHTML = p.entries.map(e => {
-            gt += parseFloat(e.val);
-            return `<div class="entry-item" onclick="initiateEdit(${e.id})"><div><div class="label-sm" style="font-size:0.7rem">R:${e.r} | Q:${e.q} | S:${e.s}</div><div style="font-weight:700; color:var(--accent); font-size:1.6rem;">${e.val}</div></div><button onclick="event.stopPropagation(); deleteEntry(${e.id})" style="background:none; border:none; color:var(--danger); font-size:1.8rem; cursor:pointer; padding:8px;">✕</button></div>`;
-        }).join('');
-        const formatted = gt.toLocaleString(undefined, {minimumFractionDigits: 2});
-        document.getElementById('grand-total-display').innerText = formatted;
-        document.getElementById('drawer-gt').innerText = formatted;
-    }
-
     function deleteEntry(eid) {
-        if(!confirm('Discard this record?')) return;
+        if(!confirm('Delete?')) return;
         const p = appData.find(x => x.id === curID);
         p.entries = p.entries.filter(e => e.id !== eid);
         save(); renderRecords();
     }
 
-    // Initial render
+    function resetCalculator() { editID = null; inputStates = { rate: '', qty: '', stock: '' }; refreshInputUI(); setNode('rate'); }
+    function toggleDrawer() { document.getElementById('side-drawer').classList.toggle('open'); document.getElementById('drawer-overlay').classList.toggle('open'); }
+
     renderHomeList();
 </script>
 </body>
