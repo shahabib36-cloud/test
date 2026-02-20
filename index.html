@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>PharmaElite Pro · Premium Dashboard</title>
+    <title>AS PHARMACY · Pro Dashboard</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
 
@@ -16,6 +16,7 @@
             --text-dim: #94a3b8;
             --glass: rgba(255, 255, 255, 0.03);
             --danger: #ff4d4d;
+            --modal-bg: rgba(10, 12, 16, 0.95);
         }
 
         * { box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -28,63 +29,101 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            font-size: 16px;
         }
 
-        /* --- Home View (Original) --- */
-        .home-header { padding: clamp(30px, 8vw, 50px) 20px 20px; text-align: center; }
-        .home-header h1 { font-weight: 800; font-size: clamp(2rem, 8vw, 3rem); margin: 0; letter-spacing: -1px; }
-        .portfolio-card { background: linear-gradient(135deg, #10b981, #059669); border-radius: 24px; margin: 0 20px 25px; padding: 28px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.1); }
-        .portfolio-value { font-size: clamp(2.5rem, 9vw, 4rem); font-weight: 800; color: white; }
-        .create-proj-box { background: var(--panel); margin: 0 20px 35px; padding: 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); display: flex; gap: 10px; }
-        #proj-name { flex-grow: 1; background: transparent; border: none; color: white; padding: 16px 18px; font-size: 1.1rem; outline: none; }
-        .btn-create { background: var(--accent); color: black; border: none; padding: 16px 24px; border-radius: 14px; font-weight: 800; cursor: pointer; }
-        .proj-card { background: linear-gradient(145deg, #161b22, #0d1117); margin: 0 20px 16px; padding: 24px 20px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; position: relative; }
-        .proj-name-text { font-size: 1.4rem; font-weight: 800; color: white; }
-        .proj-total-amt { font-size: 2rem; font-weight: 800; color: var(--accent); }
-        .proj-menu-btn { width: 52px; height: 52px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 2.5rem; border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .proj-menu { display: none; position: absolute; top: calc(100% + 10px); right: 20px; background: #1e1e1e; border-radius: 16px; padding: 10px 0; min-width: 150px; z-index: 1000; border: 1px solid rgba(255,255,255,0.1); }
-        .proj-menu-item { padding: 16px 20px; color: white; cursor: pointer; }
+        /* --- Home View --- */
+        .home-header { padding: 40px 20px 20px; text-align: center; }
+        .home-header h1 { font-weight: 800; font-size: 2.5rem; margin: 0; letter-spacing: -1px; text-transform: uppercase; }
+        
+        .portfolio-card { background: linear-gradient(135deg, #10b981, #059669); border-radius: 24px; margin: 0 20px 25px; padding: 28px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 15px 30px var(--accent-glow); }
+        .portfolio-value { font-size: 3rem; font-weight: 800; }
 
-        /* --- Calculator View (Centered Content) --- */
+        .create-proj-box { 
+            background: var(--panel); 
+            margin: 0 20px 35px; 
+            padding: 15px; 
+            border-radius: 24px; 
+            border: 1px solid rgba(255,255,255,0.12); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        #proj-name { 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            color: white; 
+            padding: 20px; 
+            border-radius: 16px; 
+            font-size: 1.2rem; 
+            outline: none; 
+            text-align: center;
+        }
+        .btn-create { 
+            background: var(--accent); 
+            color: black; 
+            border: none; 
+            padding: 20px; 
+            border-radius: 16px; 
+            font-weight: 800; 
+            font-size: 1.1rem; 
+            cursor: pointer; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .proj-card { background: linear-gradient(145deg, #161b22, #0d1117); margin: 0 20px 16px; padding: 24px 20px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; cursor: pointer; position: relative; }
+        .proj-name-text { font-size: 1.4rem; font-weight: 800; }
+        .proj-total-amt { font-size: 2rem; font-weight: 800; color: var(--accent); }
+        .proj-menu-btn { width: 48px; height: 48px; background: var(--glass); border-radius: 14px; color: white; border: 1px solid rgba(255,255,255,0.1); font-size: 2rem; display: flex; align-items: center; justify-content: center; padding-bottom: 4px; }
+        
+        .proj-menu { display: none; position: absolute; top: 75px; right: 20px; background: #1e1e1e; border-radius: 16px; padding: 8px; min-width: 160px; z-index: 1000; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .proj-menu-item { padding: 14px 20px; color: white; cursor: pointer; border-radius: 10px; font-weight: 600; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
+        .proj-menu-item:hover { background: rgba(255,255,255,0.05); }
+        .proj-menu-item.del-opt { color: var(--danger); }
+
+        /* --- Premium Modal --- */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+        .modal-card { background: var(--panel); width: 100%; max-width: 350px; border-radius: 28px; border: 1px solid rgba(255,255,255,0.1); padding: 30px; text-align: center; animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-card h2 { margin: 0 0 10px; font-size: 1.5rem; font-weight: 800; }
+        .modal-card p { color: var(--text-dim); margin-bottom: 25px; font-size: 0.95rem; }
+        .modal-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 18px; border-radius: 14px; color: white; font-size: 1.1rem; text-align: center; outline: none; margin-bottom: 20px; font-weight: 600; }
+        .modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .m-btn { padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; font-size: 0.9rem; text-transform: uppercase; }
+        .m-btn-sec { background: #2a2a2a; color: white; }
+        .m-btn-prim { background: var(--accent); color: black; }
+        .m-btn-danger { background: var(--danger); color: white; }
+
+        /* --- Calculator View --- */
         #calc-view { height: 100vh; display: flex; flex-direction: column; }
         header { padding: env(safe-area-inset-top) 20px 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 12, 0.8); backdrop-filter: blur(10px); }
         .header-title { font-weight: 800; font-size: 1.3rem; color: var(--accent); }
-        .icon-btn { width: 52px; height: 52px; border-radius: 16px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .icon-btn { width: 50px; height: 50px; border-radius: 14px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; }
 
-        /* Center Container */
-        .center-valuation-area {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .valuation-container { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-bottom: 20px; }
+        .valuation-label { font-size: 1rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 3px; font-weight: 600; }
+        .total-large { font-size: 5.5rem; font-weight: 800; color: white; margin-top: 10px; text-shadow: 0 0 40px var(--accent-glow); line-height: 1; }
 
-        .summary-card { text-align: center; padding: 20px; width: 100%; }
-        .label-sm { font-size: 0.9rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
-        .total-large { display: block; font-size: clamp(3.5rem, 15vw, 5.5rem); font-weight: 800; color: white; margin-top: 10px; text-shadow: 0 0 30px var(--accent-glow); }
-
-        /* Bottom Interaction Area */
-        .bottom-interaction { margin-top: auto; }
+        .bottom-ui { margin-top: auto; padding-bottom: calc(env(safe-area-inset-bottom) + 15px); }
         .input-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; padding: 0 20px 20px; }
-        .input-node { background: var(--panel); border-radius: 22px; padding: 22px 10px; text-align: center; border: 2px solid transparent; }
+        .input-node { background: var(--panel); border-radius: 22px; padding: 25px 10px; text-align: center; border: 2px solid transparent; }
         .input-node.active { border-color: var(--accent); background: #001517; box-shadow: 0 0 25px var(--accent-glow); }
         .input-node.active.edit-mode { border-color: var(--edit-glow); background: #1a1400; }
-        .node-val { font-size: 2.4rem; font-weight: 700; color: white; margin-top: 8px; min-height: 2.8rem; }
+        .node-val { font-size: 2.5rem; font-weight: 700; color: white; margin-top: 8px; min-height: 3rem; }
 
-        .keypad-container { background: #000; padding-bottom: env(safe-area-inset-bottom); }
-        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(255,255,255,0.05); padding: 5px; }
+        .keypad-wrapper { background: #000; padding: 10px 5px 0; }
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(255,255,255,0.05); }
         .key { background: var(--bg); border: none; color: white; padding: 22px 0; font-size: 2.2rem; font-weight: 500; outline: none; }
         .key:active { background: #1e2630; }
-        .key-main { grid-column: span 3; background: #000; color: white; padding: 26px 0; font-weight: 800; font-size: 1.4rem; border: 2px solid var(--accent); border-radius: 14px; margin: 6px 4px; box-shadow: 0 0 20px var(--accent-glow); text-transform: uppercase; }
+        .key-main { grid-column: span 3; background: #000; color: white; padding: 28px 0; font-weight: 800; font-size: 1.5rem; border: 2px solid var(--accent); border-radius: 14px; margin: 8px 5px; box-shadow: 0 0 20px var(--accent-glow); text-transform: uppercase; }
         .key-main.edit-btn { border-color: var(--edit-glow); color: var(--edit-glow); }
 
-        /* Drawer */
-        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); visibility: hidden; opacity: 0; transition: 0.3s; z-index: 1000; }
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); opacity: 0; visibility: hidden; transition: 0.3s; z-index: 1000; }
         .drawer { position: fixed; top: 0; right: -320px; width: 320px; height: 100%; background: #111; z-index: 1001; transition: 0.3s; display: flex; flex-direction: column; }
         .drawer.open { right: 0; }
-        .drawer-overlay.open { visibility: visible; opacity: 1; }
-        .entry-item { background: rgba(255,255,255,0.03); margin: 10px 15px; padding: 20px; border-radius: 18px; display: flex; justify-content: space-between; align-items: center; }
+        .drawer-overlay.open { opacity: 1; visibility: visible; }
+        .entry-item { background: rgba(255,255,255,0.03); margin: 10px 15px; padding: 20px; border-radius: 18px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
 
         .hidden { display: none !important; }
     </style>
@@ -93,51 +132,51 @@
 
 <div id="home-view" class="viewport">
     <div class="home-header">
-        <h1>PHARMA<span style="color:var(--accent)">ELITE</span></h1>
+        <h1>AS <span style="color:var(--accent)">PHARMACY</span></h1>
         <p>Inventory Control Dashboard</p>
     </div>
     <div class="portfolio-card">
-        <span style="text-transform: uppercase; font-weight: 600; color: rgba(255,255,255,0.8);">Net Inventory Value</span>
+        <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase;">Total Pharmacy Value</span>
         <span class="portfolio-value" id="portfolio-total-amount">0.00</span>
     </div>
+    
     <div class="create-proj-box">
         <input type="text" id="proj-name" placeholder="Enter Company Name...">
-        <button class="btn-create" onclick="newProject()">Create</button>
+        <button class="btn-create" onclick="newProject()">Create New Company</button>
     </div>
+    
     <div id="proj-list-container" style="flex: 1; overflow-y: auto;"></div>
 </div>
 
 <div id="calc-view" class="hidden">
     <header>
-        <button class="icon-btn" onclick="exitToHome()">✕</button>
+        <button class="icon-btn" onclick="exitToHome()">←</button>
         <div class="header-title" id="active-title">CALCULATOR</div>
         <button class="icon-btn" onclick="toggleDrawer()">☰</button>
     </header>
 
-    <div class="center-valuation-area">
-        <div class="summary-card">
-            <label class="label-sm">Project Valuation</label>
-            <span class="total-large" id="grand-total-display">0.00</span>
-        </div>
+    <div class="valuation-container">
+        <div class="valuation-label">Project Valuation</div>
+        <div class="total-large" id="grand-total-display">0.00</div>
     </div>
 
-    <div class="bottom-interaction">
+    <div class="bottom-ui">
         <div class="input-grid">
             <div class="input-node active" id="node-rate" onclick="setNode('rate')">
-                <label class="label-sm" style="font-size:0.7rem">Box Rate</label>
+                <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">BOX RATE</span>
                 <div class="node-val" id="val-rate">0</div>
             </div>
             <div class="input-node" id="node-qty" onclick="setNode('qty')">
-                <label class="label-sm" style="font-size:0.7rem">Qty</label>
+                <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">QTY</span>
                 <div class="node-val" id="val-qty">0</div>
             </div>
             <div class="input-node" id="node-stock" onclick="setNode('stock')">
-                <label class="label-sm" style="font-size:0.7rem">Stock</label>
+                <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">STOCK</span>
                 <div class="node-val" id="val-stock">0</div>
             </div>
         </div>
 
-        <div class="keypad-container">
+        <div class="keypad-wrapper">
             <div class="keypad">
                 <button class="key key-main" id="primary-action-btn" onclick="handleFlow()">NEXT FIELD</button>
                 <button class="key" onclick="kp('7')">7</button>
@@ -149,7 +188,7 @@
                 <button class="key" onclick="kp('1')">1</button>
                 <button class="key" onclick="kp('2')">2</button>
                 <button class="key" onclick="kp('3')">3</button>
-                <button class="key" style="font-size: 1.2rem; color: var(--text-dim);" onclick="kd()">DEL</button>
+                <button class="key" style="font-size: 1.3rem; color: var(--text-dim);" onclick="kd()">DEL</button>
                 <button class="key" onclick="kp('0')">0</button>
                 <button class="key" onclick="kp('.')">.</button>
             </div>
@@ -157,22 +196,48 @@
     </div>
 </div>
 
+<div id="modal-delete" class="modal-overlay">
+    <div class="modal-card">
+        <div style="font-size: 3rem; margin-bottom: 10px;">🗑️</div>
+        <h2 id="del-modal-title">Delete Company?</h2>
+        <p id="del-modal-desc">This action cannot be undone. All data will be lost.</p>
+        <div class="modal-btns">
+            <button class="m-btn m-btn-sec" onclick="closeModal('modal-delete')">Cancel</button>
+            <button class="m-btn m-btn-danger" id="confirm-delete-btn">Delete</button>
+        </div>
+    </div>
+</div>
+
+<div id="modal-rename" class="modal-overlay">
+    <div class="modal-card">
+        <div style="font-size: 3rem; margin-bottom: 10px;">📝</div>
+        <h2>Rename Company</h2>
+        <p>Enter a new name for this company.</p>
+        <input type="text" id="rename-input" class="modal-input">
+        <div class="modal-btns">
+            <button class="m-btn m-btn-sec" onclick="closeModal('modal-rename')">Cancel</button>
+            <button class="m-btn m-btn-prim" id="confirm-rename-btn">Update</button>
+        </div>
+    </div>
+</div>
+
 <div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
 <div class="drawer" id="side-drawer">
-    <div style="padding: 40px 20px 20px;">
-        <label class="label-sm">Total Valuation</label>
+    <div style="padding: 45px 20px 20px;">
+        <span style="font-size: 0.8rem; color: var(--text-dim); font-weight: 600; text-transform: uppercase;">Total List Value</span>
         <div style="font-size: 2.2rem; font-weight: 800; color: var(--accent);" id="drawer-gt">0.00</div>
     </div>
     <div id="records-list" style="flex: 1; overflow-y: auto;"></div>
-    <button onclick="toggleDrawer()" style="margin: 20px; padding: 18px; border-radius: 15px; background: #333; color: white; border: none;">CLOSE</button>
+    <button onclick="toggleDrawer()" style="margin: 20px; padding: 18px; border-radius: 16px; background: #333; color: white; border: none; font-weight: 800;">CLOSE</button>
 </div>
 
 <script>
-    /* Original Logic Restored */
     let appData = JSON.parse(localStorage.getItem('pharma_elite_v1')) || [];
     let curID = null, editID = null, activeNode = 'rate';
     let inputStates = { rate: '', qty: '', stock: '' };
     let currentOpenMenu = null;
+    let pendingActionID = null;
+    let deleteMode = 'project'; // 'project' or 'entry'
 
     function save() { localStorage.setItem('pharma_elite_v1', JSON.stringify(appData)); }
 
@@ -183,23 +248,81 @@
             const total = p.entries.reduce((sum, e) => sum + parseFloat(e.val), 0);
             return `<div class="proj-card" onclick="openProject(${p.id})">
                 <div style="flex:1">
-                    <span class="proj-name-text">${p.name}</span>
-                    <span style="display:block; color:var(--text-dim); font-size:0.9rem;">${p.entries.length} items</span>
+                    <span class="proj-name-text">${p.name}</span><br>
+                    <small style="color:var(--text-dim)">${p.entries.length} items recorded</small>
                 </div>
                 <div style="text-align:right">
-                    <span class="proj-total-amt">${total.toLocaleString(undefined,{minimumFractionDigits:2})}</span>
+                    <span class="proj-total-amt">${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
                 </div>
-                <div class="proj-menu-container" onclick="event.stopPropagation()">
+                <div onclick="event.stopPropagation()" style="margin-left:15px">
                     <button class="proj-menu-btn" onclick="toggleProjectMenu(event, ${p.id})">⋮</button>
                     <div class="proj-menu" id="proj-menu-${p.id}">
-                        <div class="proj-menu-item" onclick="deleteProject(${p.id})">Delete</div>
+                        <div class="proj-menu-item" onclick="initRename(${p.id})">✏️ Rename</div>
+                        <div class="proj-menu-item del-opt" onclick="initDelete(${p.id}, 'project')">🗑️ Delete</div>
                     </div>
                 </div>
             </div>`;
         }).join('');
         const portTotal = appData.reduce((s, p) => s + p.entries.reduce((ss, e) => ss + parseFloat(e.val), 0), 0);
-        document.getElementById('portfolio-total-amount').innerText = portTotal.toLocaleString(undefined,{minimumFractionDigits:2});
+        document.getElementById('portfolio-total-amount').innerText = portTotal.toLocaleString(undefined, {minimumFractionDigits: 2});
     }
+
+    // Modal Controls
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    // Unified Delete Logic
+    function initDelete(id, mode) {
+        pendingActionID = id;
+        deleteMode = mode;
+        if(currentOpenMenu) currentOpenMenu.style.display = 'none';
+        
+        const title = document.getElementById('del-modal-title');
+        const desc = document.getElementById('del-modal-desc');
+
+        if(mode === 'project') {
+            title.innerText = "Delete Company?";
+            desc.innerText = "This action cannot be undone. All company data will be lost.";
+        } else {
+            title.innerText = "Remove Entry?";
+            desc.innerText = "This record will be permanently deleted from the list.";
+        }
+        
+        openModal('modal-delete');
+    }
+
+    document.getElementById('confirm-delete-btn').onclick = () => {
+        if(deleteMode === 'project') {
+            appData = appData.filter(p => p.id !== pendingActionID);
+            save(); renderHomeList();
+        } else {
+            const p = appData.find(x => x.id === curID);
+            p.entries = p.entries.filter(e => e.id !== pendingActionID);
+            save(); renderRecords();
+        }
+        closeModal('modal-delete');
+    };
+
+    // Rename Logic
+    function initRename(id) {
+        pendingActionID = id;
+        const p = appData.find(x => x.id === id);
+        const input = document.getElementById('rename-input');
+        input.value = p.name;
+        if(currentOpenMenu) currentOpenMenu.style.display = 'none';
+        openModal('modal-rename');
+        setTimeout(() => { input.focus(); input.select(); }, 100);
+    }
+
+    document.getElementById('confirm-rename-btn').onclick = () => {
+        const newName = document.getElementById('rename-input').value.trim().toUpperCase();
+        if(newName) {
+            const p = appData.find(x => x.id === pendingActionID);
+            p.name = newName;
+            save(); renderHomeList();
+            closeModal('modal-rename');
+        }
+    };
 
     function toggleProjectMenu(e, id) {
         e.stopPropagation();
@@ -209,11 +332,7 @@
         currentOpenMenu = menu;
     }
 
-    function deleteProject(id) {
-        if(!confirm('Delete project?')) return;
-        appData = appData.filter(p => p.id !== id);
-        save(); renderHomeList();
-    }
+    window.onclick = () => { if(currentOpenMenu) { currentOpenMenu.style.display = 'none'; currentOpenMenu = null; } };
 
     function newProject() {
         const name = document.getElementById('proj-name').value;
@@ -277,8 +396,8 @@
         container.innerHTML = p.entries.map(e => {
             gt += parseFloat(e.val);
             return `<div class="entry-item" onclick="initiateEdit(${e.id})">
-                <div><small>R:${e.r} | Q:${e.q} | S:${e.s}</small><div style="font-weight:700; color:var(--accent); font-size:1.5rem;">${e.val}</div></div>
-                <button onclick="event.stopPropagation(); deleteEntry(${e.id})" style="background:none; border:none; color:var(--danger); font-size:1.5rem;">✕</button>
+                <div><small>R:${e.r} | Q:${e.q} | S:${e.s}</small><div style="font-weight:700; color:var(--accent); font-size:1.6rem;">${e.val}</div></div>
+                <button onclick="event.stopPropagation(); initDelete(${e.id}, 'entry')" style="background:none; border:none; color:var(--danger); font-size:1.6rem;">✕</button>
             </div>`;
         }).join('');
         const fmt = gt.toLocaleString(undefined, {minimumFractionDigits: 2});
@@ -300,13 +419,6 @@
         const idx = p.entries.findIndex(x => x.id === editID);
         p.entries[idx] = { id: editID, r, q, s, val: ((r/q)*s).toFixed(2) };
         save(); resetCalculator(); renderRecords();
-    }
-
-    function deleteEntry(eid) {
-        if(!confirm('Delete entry?')) return;
-        const p = appData.find(x => x.id === curID);
-        p.entries = p.entries.filter(e => e.id !== eid);
-        save(); renderRecords();
     }
 
     function resetCalculator() { editID = null; inputStates = { rate: '', qty: '', stock: '' }; refreshInputUI(); setNode('rate'); }
