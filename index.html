@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>PharmaElite Pro - Dashboard Upgrade</title>
+    <title>PharmaElite Pro · Premium Dashboard</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
 
         :root {
-            --bg: #080a0c;
-            --panel: #111418;
-            --accent: #00f2ff;
-            --accent-glow: rgba(0, 242, 255, 0.25);
-            --edit-glow: #ff9d00;
-            --text-dim: #8b949e;
+            --bg: #0a0c10;                /* deep carbon */
+            --panel: #14181f;              /* dark navy gray */
+            --accent: #10b981;              /* vibrant emerald */
+            --accent-glow: rgba(16, 185, 129, 0.2);
+            --edit-glow: #f59e0b;           /* amber gold */
+            --text-dim: #94a3b8;
             --glass: rgba(255, 255, 255, 0.03);
             --danger: #ff4d4d;
         }
@@ -28,22 +28,65 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            font-size: 16px; /* base for rem */
         }
 
         /* --- Updated Home View Styling --- */
         .home-header {
-            padding: 40px 20px 20px;
+            padding: clamp(30px, 8vw, 50px) 20px 20px;
             text-align: center;
+        }
+
+        .home-header h1 {
+            font-weight: 800;
+            font-size: clamp(2rem, 8vw, 3rem);
+            margin: 0;
+            letter-spacing: -1px;
+        }
+
+        .home-header p {
+            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+        }
+
+        /* --- Premium Portfolio Card --- */
+        .portfolio-card {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 24px;
+            margin: 0 20px 25px;
+            padding: 28px 28px;
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.25);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .portfolio-label {
+            font-size: clamp(0.8rem, 3vw, 1rem);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .portfolio-value {
+            font-size: clamp(2.5rem, 9vw, 4rem);
+            font-weight: 800;
+            line-height: 1.2;
+            color: white;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
         .create-proj-box {
             background: var(--panel);
-            margin: 0 20px 30px;
-            padding: 8px;
-            border-radius: 16px;
+            margin: 0 20px 35px;
+            padding: 10px;
+            border-radius: 20px;
             border: 1px solid rgba(255,255,255,0.08);
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
 
         #proj-name {
@@ -51,8 +94,8 @@
             background: transparent;
             border: none;
             color: white;
-            padding: 12px 15px;
-            font-size: 1rem;
+            padding: 16px 18px;
+            font-size: clamp(1rem, 4vw, 1.2rem);
             outline: none;
         }
 
@@ -60,41 +103,42 @@
             background: var(--accent);
             color: black;
             border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
+            padding: 16px 24px;
+            border-radius: 14px;
             font-weight: 800;
-            font-size: 0.8rem;
+            font-size: clamp(0.9rem, 3.5vw, 1rem);
             text-transform: uppercase;
             cursor: pointer;
+            transition: transform 0.1s ease;
         }
+        .btn-create:active { transform: scale(0.96); }
 
-        /* Project Card — with three-dots menu */
+        /* Project Card — bigger & bolder */
         .proj-card {
             background: linear-gradient(145deg, #161b22, #0d1117);
-            margin: 0 20px 12px;
-            padding: 20px;
-            border-radius: 18px;
+            margin: 0 20px 16px;
+            padding: 24px 20px;
+            border-radius: 22px;
             border: 1px solid rgba(255,255,255,0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: 0.2s;
-            position: relative;  /* context for absolute menu */
+            transition: transform 0.15s ease;
+            position: relative;
         }
 
-        .proj-card:active { transform: scale(0.97); background: #1c222b; }
+        .proj-card:active { transform: scale(0.98); background: #1c222b; }
 
-        /* left side: project name & item count */
         .proj-left {
             flex: 1;
             border-right: 1px solid rgba(255,255,255,0.1);
             text-align: left;
-            padding-right: 12px;
+            padding-right: 16px;
         }
 
         .proj-name-text { 
-            font-size: 1.1rem; 
-            font-weight: 700; 
+            font-size: clamp(1.2rem, 5vw, 1.6rem); 
+            font-weight: 800; 
             color: white; 
             display: block; 
             white-space: nowrap; 
@@ -102,83 +146,83 @@
             text-overflow: ellipsis; 
         }
         .proj-item-count { 
-            font-size: 0.75rem; 
+            font-size: clamp(0.8rem, 3vw, 1rem); 
             color: var(--text-dim); 
             display: block;
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
-        /* right side: grand total */
         .proj-right {
             flex: 1;
             text-align: right;
-            padding-left: 12px;
+            padding-left: 16px;
         }
 
         .proj-total-label { 
-            font-size: 0.6rem; 
+            font-size: clamp(0.7rem, 2.5vw, 0.9rem); 
             color: var(--text-dim); 
             text-transform: uppercase; 
             letter-spacing: 1px; 
             display: block; 
         }
         .proj-total-amt { 
-            font-size: 1.4rem; 
+            font-size: clamp(1.6rem, 7vw, 2.4rem); 
             font-weight: 800; 
             color: var(--accent); 
             display: block; 
             line-height: 1.2;
         }
 
-        /* three-dots button & dropdown menu */
+        /* three-dots — bigger tap area */
         .proj-menu-container {
             position: relative;
             display: flex;
             align-items: center;
-            margin-left: 8px;
+            margin-left: 10px;
             flex-shrink: 0;
         }
 
         .proj-menu-btn {
-            width: 40px;
-            height: 40px;
+            width: 52px;
+            height: 52px;
             background: transparent;
             border: none;
             color: white;
-            font-size: 2rem;
+            font-size: 2.5rem;
             line-height: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border-radius: 12px;
+            border-radius: 16px;
             background: var(--glass);
             border: 1px solid rgba(255,255,255,0.1);
-            transition: 0.2s;
+            transition: transform 0.1s ease, background 0.2s;
             padding: 0;
         }
         .proj-menu-btn:active {
             background: #1c222b;
+            transform: scale(0.94);
         }
 
         .proj-menu {
             display: none;
             position: absolute;
-            top: calc(100% + 6px);
+            top: calc(100% + 10px);
             right: 0;
             background: #1e1e1e;
-            border-radius: 12px;
-            padding: 8px 0;
-            min-width: 130px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+            border-radius: 16px;
+            padding: 10px 0;
+            min-width: 150px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.7);
             border: 1px solid rgba(255,255,255,0.1);
             z-index: 1000;
         }
 
         .proj-menu-item {
-            padding: 12px 16px;
+            padding: 16px 20px;
             color: white;
-            font-size: 0.9rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: background 0.2s;
             text-align: left;
@@ -189,7 +233,7 @@
             background: rgba(255,255,255,0.1);
         }
 
-        /* --- Header & Calculator Navigation (unchanged) --- */
+        /* --- Header & Calculator Navigation --- */
         header {
             padding: env(safe-area-inset-top) 20px 15px;
             background: rgba(8, 10, 12, 0.8);
@@ -201,65 +245,113 @@
             z-index: 100;
         }
 
-        .header-title { font-weight: 800; font-size: 1.1rem; letter-spacing: 1px; color: var(--accent); }
+        .header-title { font-weight: 800; font-size: clamp(1.1rem, 4vw, 1.5rem); letter-spacing: 1px; color: var(--accent); }
         .icon-btn { 
-            width: 45px; height: 45px; 
-            border-radius: 12px; 
+            width: 52px; height: 52px; 
+            border-radius: 16px; 
             background: var(--glass);
             border: 1px solid rgba(255,255,255,0.1);
             color: white;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .icon-btn:active { transform: scale(0.94); background: #1c222b; }
+
+        /* --- Make calc-view a flex column so .viewport can take remaining space --- */
+        #calc-view {
+            display: flex;
+            flex-direction: column;
+            height: 100%;  /* fill body height */
         }
 
-        /* --- Main Calculator Display (untouched) --- */
-        .viewport { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; padding-bottom: 30px; }
+        /* --- Main Calculator Display --- */
+        .viewport { 
+            flex: 1;  /* takes all remaining space in #calc-view */
+            display: flex; 
+            flex-direction: column; 
+            overflow-y: auto; 
+        }
         
         .summary-card {
             background: linear-gradient(145deg, #161b22, #0d1117);
-            border-radius: 24px;
-            padding: 25px;
+            border-radius: 28px;
+            padding: 30px 25px;
             text-align: center;
-            margin: 10px 20px 20px;
+            margin: 15px 20px 25px;
             border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
 
-        .label-sm { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
-        .total-large { display: block; font-size: 3rem; font-weight: 800; color: white; margin-top: 5px; text-shadow: 0 0 15px var(--accent-glow); }
+        .label-sm { font-size: clamp(0.75rem, 3vw, 0.9rem); color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+        .total-large { display: block; font-size: clamp(3rem, 12vw, 5rem); font-weight: 800; color: white; margin-top: 8px; text-shadow: 0 0 20px var(--accent-glow); }
 
-        .input-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; padding: 0 20px; }
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; padding: 0 20px; }
         
         .input-node {
             background: var(--panel);
-            border-radius: 20px;
-            padding: 20px 10px;
+            border-radius: 24px;
+            padding: 26px 12px;
             text-align: center;
             border: 2px solid transparent;
             transition: 0.2s;
+            cursor: pointer;
         }
 
-        .input-node.active { border-color: var(--accent); background: #001517; box-shadow: 0 0 25px var(--accent-glow); transform: translateY(-3px); }
-        .input-node.active.edit-mode { border-color: var(--edit-glow); background: #1a1400; box-shadow: 0 0 25px rgba(255,157,0,0.2); }
+        .input-node.active { border-color: var(--accent); background: #001517; box-shadow: 0 0 30px var(--accent-glow); transform: translateY(-4px); }
+        .input-node.active.edit-mode { border-color: var(--edit-glow); background: #1a1400; box-shadow: 0 0 30px rgba(245, 158, 11, 0.3); }
 
-        .node-val { font-size: 1.8rem; font-weight: 700; color: white; margin-top: 5px; min-height: 2.2rem; }
+        .node-val { font-size: clamp(2rem, 8vw, 2.8rem); font-weight: 700; color: white; margin-top: 10px; min-height: 2.5rem; }
 
-        /* --- Keypad (unchanged) --- */
-        .keypad-container { background: #000; margin-top: auto; }
-        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.05); padding: 5px; }
-        .key { background: var(--bg); border: none; color: white; padding: 20px; font-size: 1.8rem; font-weight: 400; outline: none; cursor: pointer; }
-        .key:active { background: #161b22; transform: scale(0.95); }
-        .key-action { font-size: 1rem; color: var(--text-dim); font-weight: 600; }
-        .key-main { grid-column: span 3; background: var(--accent); color: black; padding: 22px; font-weight: 800; font-size: 1.2rem; cursor: pointer; }
-        .key-main.edit-btn { background: var(--edit-glow); }
+        /* --- Keypad with PREMIUM black action button --- */
+        .keypad-container { 
+            background: #000; 
+            margin-top: auto; 
+            padding-bottom: max(env(safe-area-inset-bottom), 12px); /* stick to bottom with safe area */
+        }
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(255,255,255,0.05); padding: 6px; }
+        .key { background: var(--bg); border: none; color: white; padding: 24px 0; font-size: clamp(2rem, 7vw, 2.5rem); font-weight: 500; outline: none; cursor: pointer; transition: transform 0.1s ease, background 0.1s; }
+        .key:active { background: #1e2630; transform: scale(0.94); }
+        .key-action { font-size: clamp(1rem, 4vw, 1.3rem); color: var(--text-dim); font-weight: 700; }
 
-        /* --- Drawer (unchanged) --- */
-        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); opacity: 0; visibility: hidden; transition: 0.4s; z-index: 1000; }
-        .drawer { position: fixed; top: 0; right: -320px; width: 320px; height: 100%; background: #111; z-index: 1001; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); }
+        /* 🖤 PREMIUM BLACK BUTTON — extra glow, thicker */
+        .key-main {
+            grid-column: span 3;
+            background: #000000;
+            color: white;
+            padding: 28px 0;
+            font-weight: 800;
+            font-size: clamp(1.3rem, 5vw, 1.8rem);
+            cursor: pointer;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 30px var(--accent-glow), 0 0 15px rgba(16, 185, 129, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: transform 0.1s ease, box-shadow 0.2s;
+            border-radius: 14px;
+            margin: 6px 3px;
+        }
+        .key-main:active {
+            transform: scale(0.96);
+            background: #0f0f0f;
+            box-shadow: 0 0 45px var(--accent);
+        }
+        .key-main.edit-btn {
+            border-color: var(--edit-glow);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.7);
+            color: var(--edit-glow);
+        }
+        .key-main.edit-btn:active {
+            box-shadow: 0 0 45px var(--edit-glow);
+        }
+
+        /* --- Drawer --- */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); opacity: 0; visibility: hidden; transition: 0.4s; z-index: 1000; }
+        .drawer { position: fixed; top: 0; right: -340px; width: 340px; height: 100%; background: #111; z-index: 1001; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); }
         .drawer.open { right: 0; }
         .drawer-overlay.open { opacity: 1; visibility: visible; }
-        .entry-item { background: rgba(255,255,255,0.03); margin: 10px 15px; padding: 18px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
+        .entry-item { background: rgba(255,255,255,0.03); margin: 12px 18px; padding: 22px 20px; border-radius: 22px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
 
         .hidden { display: none; }
     </style>
@@ -268,8 +360,14 @@
 
 <div id="home-view" class="viewport">
     <div class="home-header">
-        <h1 style="font-weight: 800; font-size: 2.2rem; margin: 0; letter-spacing: -1px;">PHARMA<span style="color:var(--accent)">ELITE</span></h1>
-        <p style="color: var(--text-dim); font-size: 0.9rem; margin-top: 5px;">Inventory Control Dashboard</p>
+        <h1>PHARMA<span style="color:var(--accent)">ELITE</span></h1>
+        <p>Inventory Control Dashboard</p>
+    </div>
+
+    <!-- Premium Portfolio Card (Net Inventory Value) -->
+    <div class="portfolio-card" id="portfolio-total-card">
+        <span class="portfolio-label">Net Inventory Value</span>
+        <span class="portfolio-value" id="portfolio-total-amount">0.00</span>
     </div>
     
     <div class="create-proj-box">
@@ -312,19 +410,20 @@
 
         <div class="keypad-container">
             <div class="keypad">
-                <button class="key" onclick="kp('1')">1</button>
-                <button class="key" onclick="kp('2')">2</button>
-                <button class="key" onclick="kp('3')">3</button>
-                <button class="key" onclick="kp('4')">4</button>
-                <button class="key" onclick="kp('5')">5</button>
-                <button class="key" onclick="kp('6')">6</button>
+                <!-- Primary action button at top (thick & glowing) -->
+                <button class="key key-main" id="primary-action-btn" onclick="handleFlow()">NEXT FIELD</button>
                 <button class="key" onclick="kp('7')">7</button>
                 <button class="key" onclick="kp('8')">8</button>
                 <button class="key" onclick="kp('9')">9</button>
+                <button class="key" onclick="kp('4')">4</button>
+                <button class="key" onclick="kp('5')">5</button>
+                <button class="key" onclick="kp('6')">6</button>
+                <button class="key" onclick="kp('1')">1</button>
+                <button class="key" onclick="kp('2')">2</button>
+                <button class="key" onclick="kp('3')">3</button>
                 <button class="key key-action" onclick="kd()">DEL</button>
                 <button class="key" onclick="kp('0')">0</button>
                 <button class="key key-action" onclick="kp('.')">.</button>
-                <button class="key key-main" id="primary-action-btn" onclick="handleFlow()">NEXT FIELD</button>
             </div>
         </div>
     </div>
@@ -334,11 +433,11 @@
 <div class="drawer" id="side-drawer">
     <div style="padding: 40px 20px 20px; background: rgba(255,255,255,0.02);">
         <label class="label-sm">Total Valuation</label>
-        <div style="font-size: 2rem; font-weight: 800; color: var(--accent);" id="drawer-gt">0.00</div>
+        <div style="font-size: 2.2rem; font-weight: 800; color: var(--accent);" id="drawer-gt">0.00</div>
     </div>
     <div id="records-list" style="flex-grow: 1; overflow-y: auto; padding-bottom: 20px;"></div>
     <div style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
-        <button onclick="toggleDrawer()" style="width: 100%; padding: 15px; border-radius: 12px; background: #333; color: white; border: none; font-weight: 600; cursor: pointer;">CLOSE</button>
+        <button onclick="toggleDrawer()" style="width: 100%; padding: 18px; border-radius: 16px; background: #333; color: white; border: none; font-weight: 600; font-size: 1rem; cursor: pointer; transition: transform 0.1s;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">CLOSE</button>
     </div>
 </div>
 
@@ -350,7 +449,7 @@
     let inputStates = { rate: '', qty: '', stock: '' };
     let currentOpenMenu = null; // track which project menu is open
 
-    // ----- HOME VIEW: RENDER PROJECT LIST (with three-dots menu) -----
+    // ----- HOME VIEW: RENDER PROJECT LIST + PORTFOLIO TOTAL -----
     function renderHomeList() {
         const container = document.getElementById('proj-list-container');
         // Close any open menu before re-render
@@ -389,6 +488,13 @@
                 </div>
             `;
         }).join('');
+
+        // Update the Net Inventory Value card (sum of all project grand totals)
+        const portfolioTotal = appData.reduce((sum, p) => {
+            return sum + p.entries.reduce((sub, e) => sub + parseFloat(e.val), 0);
+        }, 0);
+        document.getElementById('portfolio-total-amount').innerText = 
+            portfolioTotal.toLocaleString(undefined, {minimumFractionDigits: 2});
     }
 
     // ----- PROJECT MENU (three-dots) -----
@@ -557,7 +663,7 @@
         let gt = 0;
         container.innerHTML = p.entries.map(e => {
             gt += parseFloat(e.val);
-            return `<div class="entry-item" onclick="initiateEdit(${e.id})"><div><div class="label-sm" style="font-size:0.6rem">R:${e.r} | Q:${e.q} | S:${e.s}</div><div style="font-weight:700; color:var(--accent); font-size:1.2rem;">${e.val}</div></div><button onclick="event.stopPropagation(); deleteEntry(${e.id})" style="background:none; border:none; color:var(--danger); font-size:1.2rem; cursor:pointer;">✕</button></div>`;
+            return `<div class="entry-item" onclick="initiateEdit(${e.id})"><div><div class="label-sm" style="font-size:0.7rem">R:${e.r} | Q:${e.q} | S:${e.s}</div><div style="font-weight:700; color:var(--accent); font-size:1.6rem;">${e.val}</div></div><button onclick="event.stopPropagation(); deleteEntry(${e.id})" style="background:none; border:none; color:var(--danger); font-size:1.8rem; cursor:pointer; padding:8px;">✕</button></div>`;
         }).join('');
         const formatted = gt.toLocaleString(undefined, {minimumFractionDigits: 2});
         document.getElementById('grand-total-display').innerText = formatted;
