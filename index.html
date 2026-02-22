@@ -28,14 +28,20 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
         }
 
-        /* --- Home View --- */
-        .home-header { padding: 40px 20px 20px; text-align: center; }
+        /* --- Home View & Scroll Fix --- */
+        #home-view {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .home-header { padding: 40px 20px 20px; text-align: center; flex-shrink: 0; }
         .home-header h1 { font-weight: 800; font-size: 2.5rem; margin: 0; letter-spacing: -1px; text-transform: uppercase; }
         
-        .portfolio-card { background: linear-gradient(135deg, #10b981, #059669); border-radius: 24px; margin: 0 20px 25px; padding: 28px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 15px 30px var(--accent-glow); }
+        .portfolio-card { background: linear-gradient(135deg, #10b981, #059669); border-radius: 24px; margin: 0 20px 25px; padding: 28px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 15px 30px var(--accent-glow); flex-shrink: 0; }
         .portfolio-value { font-size: 3rem; font-weight: 800; }
 
         .create-proj-box { 
@@ -47,65 +53,39 @@
             display: flex; 
             flex-direction: column; 
             gap: 15px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            flex-shrink: 0;
         }
+        
         #proj-name { 
             background: rgba(255,255,255,0.05); 
             border: 1px solid rgba(255,255,255,0.1); 
-            color: white; 
-            padding: 20px; 
-            border-radius: 16px; 
-            font-size: 1.2rem; 
-            outline: none; 
-            text-align: center;
+            color: white; padding: 20px; border-radius: 16px; font-size: 1.2rem; outline: none; text-align: center;
         }
         .btn-create { 
-            background: var(--accent); 
-            color: black; 
-            border: none; 
-            padding: 20px; 
-            border-radius: 16px; 
-            font-weight: 800; 
-            font-size: 1.1rem; 
-            cursor: pointer; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            background: var(--accent); color: black; border: none; padding: 20px; border-radius: 16px; font-weight: 800; font-size: 1.1rem; cursor: pointer; text-transform: uppercase;
         }
+
+        #proj-list-container { padding-bottom: 50px; }
 
         .proj-card { background: linear-gradient(145deg, #161b22, #0d1117); margin: 0 20px 16px; padding: 24px 20px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; cursor: pointer; position: relative; }
         .proj-name-text { font-size: 1.4rem; font-weight: 800; }
         .proj-total-amt { font-size: 2rem; font-weight: 800; color: var(--accent); }
-        .proj-menu-btn { width: 48px; height: 48px; background: var(--glass); border-radius: 14px; color: white; border: 1px solid rgba(255,255,255,0.1); font-size: 2rem; display: flex; align-items: center; justify-content: center; padding-bottom: 4px; }
+        .proj-menu-btn { width: 48px; height: 48px; background: var(--glass); border-radius: 14px; color: white; border: 1px solid rgba(255,255,255,0.1); font-size: 2rem; display: flex; align-items: center; justify-content: center; }
         
         .proj-menu { display: none; position: absolute; top: 75px; right: 20px; background: #1e1e1e; border-radius: 16px; padding: 8px; min-width: 160px; z-index: 1000; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .proj-menu-item { padding: 14px 20px; color: white; cursor: pointer; border-radius: 10px; font-weight: 600; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
-        .proj-menu-item:hover { background: rgba(255,255,255,0.05); }
-        .proj-menu-item.del-opt { color: var(--danger); }
-
-        /* --- Premium Modal --- */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
-        .modal-card { background: var(--panel); width: 100%; max-width: 350px; border-radius: 28px; border: 1px solid rgba(255,255,255,0.1); padding: 30px; text-align: center; animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        @keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal-card h2 { margin: 0 0 10px; font-size: 1.5rem; font-weight: 800; }
-        .modal-card p { color: var(--text-dim); margin-bottom: 25px; font-size: 0.95rem; }
-        .modal-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 18px; border-radius: 14px; color: white; font-size: 1.1rem; text-align: center; outline: none; margin-bottom: 20px; font-weight: 600; }
-        .modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .m-btn { padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; font-size: 0.9rem; text-transform: uppercase; }
-        .m-btn-sec { background: #2a2a2a; color: white; }
-        .m-btn-prim { background: var(--accent); color: black; }
-        .m-btn-danger { background: var(--danger); color: white; }
+        .proj-menu-item { padding: 14px 20px; color: white; cursor: pointer; border-radius: 10px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
 
         /* --- Calculator View --- */
-        #calc-view { height: 100vh; display: flex; flex-direction: column; }
-        header { padding: env(safe-area-inset-top) 20px 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 12, 0.8); backdrop-filter: blur(10px); }
+        #calc-view { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        header { padding: env(safe-area-inset-top) 20px 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 12, 0.8); backdrop-filter: blur(10px); flex-shrink: 0; }
         .header-title { font-weight: 800; font-size: 1.3rem; color: var(--accent); }
-        .icon-btn { width: 50px; height: 50px; border-radius: 14px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; }
+        .icon-btn { width: 50px; height: 50px; border-radius: 14px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 
-        .valuation-container { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-bottom: 20px; }
+        .valuation-container { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         .valuation-label { font-size: 1rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 3px; font-weight: 600; }
-        .total-large { font-size: 5.5rem; font-weight: 800; color: white; margin-top: 10px; text-shadow: 0 0 40px var(--accent-glow); line-height: 1; }
+        .total-large { font-size: clamp(3rem, 12vw, 5.5rem); font-weight: 800; color: white; margin-top: 10px; text-shadow: 0 0 40px var(--accent-glow); }
 
-        .bottom-ui { margin-top: auto; padding-bottom: calc(env(safe-area-inset-bottom) + 15px); }
+        .bottom-ui { margin-top: auto; padding-bottom: calc(env(safe-area-inset-bottom) + 10px); }
         .input-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; padding: 0 20px 20px; }
         .input-node { background: var(--panel); border-radius: 22px; padding: 25px 10px; text-align: center; border: 2px solid transparent; }
         .input-node.active { border-color: var(--accent); background: #001517; box-shadow: 0 0 25px var(--accent-glow); }
@@ -113,24 +93,49 @@
         .node-val { font-size: 2.5rem; font-weight: 700; color: white; margin-top: 8px; min-height: 3rem; }
 
         .keypad-wrapper { background: #000; padding: 10px 5px 0; }
-        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(255,255,255,0.05); }
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
         .key { background: var(--bg); border: none; color: white; padding: 22px 0; font-size: 2.2rem; font-weight: 500; outline: none; }
-        .key:active { background: #1e2630; }
-        .key-main { grid-column: span 3; background: #000; color: white; padding: 28px 0; font-weight: 800; font-size: 1.5rem; border: 2px solid var(--accent); border-radius: 14px; margin: 8px 5px; box-shadow: 0 0 20px var(--accent-glow); text-transform: uppercase; }
+        .key-main { grid-column: span 3; background: #000; color: white; padding: 28px 0; font-weight: 800; font-size: 1.5rem; border: 2px solid var(--accent); border-radius: 14px; margin: 8px 5px; text-transform: uppercase; }
         .key-main.edit-btn { border-color: var(--edit-glow); color: var(--edit-glow); }
+        
+        /* New Styles for AC and Cancel Buttons */
+        .key-ac { color: var(--danger); font-weight: 700; }
+        .cancel-edit-btn { 
+            grid-column: span 3; background: #1a1a1a; color: var(--text-dim); 
+            padding: 12px 0; font-weight: 700; font-size: 1rem; border: 1px solid #333; 
+            border-radius: 10px; margin: 0 5px 8px; text-transform: uppercase;
+        }
+
+        /* --- Drawer & Modals --- */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+        .modal-card { background: var(--panel); width: 100%; max-width: 350px; border-radius: 28px; border: 1px solid rgba(255,255,255,0.1); padding: 30px; text-align: center; }
+        .modal-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 18px; border-radius: 14px; color: white; font-size: 1.1rem; text-align: center; outline: none; margin-bottom: 20px; }
+        .modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .m-btn { padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; }
+        .m-btn-sec { background: #2a2a2a; color: white; }
+        .m-btn-prim { background: var(--accent); color: black; }
+        .m-btn-danger { background: var(--danger); color: white; }
 
         .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); opacity: 0; visibility: hidden; transition: 0.3s; z-index: 1000; }
-        .drawer { position: fixed; top: 0; right: -320px; width: 320px; height: 100%; background: #111; z-index: 1001; transition: 0.3s; display: flex; flex-direction: column; }
+        .drawer { position: fixed; top: 0; right: -85%; width: 85%; max-width: 320px; height: 100%; background: #111; z-index: 1001; transition: 0.3s; display: flex; flex-direction: column; }
         .drawer.open { right: 0; }
         .drawer-overlay.open { opacity: 1; visibility: visible; }
-        .entry-item { background: rgba(255,255,255,0.03); margin: 10px 15px; padding: 20px; border-radius: 18px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
+        .entry-item { background: rgba(255,255,255,0.03); margin: 10px 15px; padding: 20px; border-radius: 18px; display: flex; justify-content: space-between; align-items: center; }
 
         .hidden { display: none !important; }
+
+        @media (max-width: 400px) {
+            .home-header h1 { font-size: 2rem; }
+            .portfolio-value { font-size: 2.4rem; }
+            .proj-total-amt { font-size: 1.6rem; }
+            .node-val { font-size: 2rem; }
+            .key { padding: 18px 0; font-size: 1.8rem; }
+        }
     </style>
 </head>
 <body>
 
-<div id="home-view" class="viewport">
+<div id="home-view">
     <div class="home-header">
         <h1>AS <span style="color:var(--accent)">PHARMACY</span></h1>
         <p>Inventory Control Dashboard</p>
@@ -145,7 +150,7 @@
         <button class="btn-create" onclick="newProject()">Create New Company</button>
     </div>
     
-    <div id="proj-list-container" style="flex: 1; overflow-y: auto;"></div>
+    <div id="proj-list-container"></div>
 </div>
 
 <div id="calc-view" class="hidden">
@@ -177,6 +182,7 @@
         </div>
 
         <div class="keypad-wrapper">
+            <button id="cancel-edit-btn" class="cancel-edit-btn hidden" onclick="resetCalculator()">Cancel Edit</button>
             <div class="keypad">
                 <button class="key key-main" id="primary-action-btn" onclick="handleFlow()">NEXT FIELD</button>
                 <button class="key" onclick="kp('7')">7</button>
@@ -188,7 +194,7 @@
                 <button class="key" onclick="kp('1')">1</button>
                 <button class="key" onclick="kp('2')">2</button>
                 <button class="key" onclick="kp('3')">3</button>
-                <button class="key" style="font-size: 1.3rem; color: var(--text-dim);" onclick="kd()">DEL</button>
+                <button class="key key-ac" onclick="ka()">AC</button>
                 <button class="key" onclick="kp('0')">0</button>
                 <button class="key" onclick="kp('.')">.</button>
             </div>
@@ -198,9 +204,8 @@
 
 <div id="modal-delete" class="modal-overlay">
     <div class="modal-card">
-        <div style="font-size: 3rem; margin-bottom: 10px;">🗑️</div>
-        <h2 id="del-modal-title">Delete Company?</h2>
-        <p id="del-modal-desc">This action cannot be undone. All data will be lost.</p>
+        <h2 id="del-modal-title">Delete?</h2>
+        <p id="del-modal-desc">This action cannot be undone.</p>
         <div class="modal-btns">
             <button class="m-btn m-btn-sec" onclick="closeModal('modal-delete')">Cancel</button>
             <button class="m-btn m-btn-danger" id="confirm-delete-btn">Delete</button>
@@ -210,9 +215,7 @@
 
 <div id="modal-rename" class="modal-overlay">
     <div class="modal-card">
-        <div style="font-size: 3rem; margin-bottom: 10px;">📝</div>
         <h2>Rename Company</h2>
-        <p>Enter a new name for this company.</p>
         <input type="text" id="rename-input" class="modal-input">
         <div class="modal-btns">
             <button class="m-btn m-btn-sec" onclick="closeModal('modal-rename')">Cancel</button>
@@ -224,7 +227,7 @@
 <div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
 <div class="drawer" id="side-drawer">
     <div style="padding: 45px 20px 20px;">
-        <span style="font-size: 0.8rem; color: var(--text-dim); font-weight: 600; text-transform: uppercase;">Total List Value</span>
+        <span style="font-size: 0.8rem; color: var(--text-dim); font-weight: 600;">Total List Value</span>
         <div style="font-size: 2.2rem; font-weight: 800; color: var(--accent);" id="drawer-gt">0.00</div>
     </div>
     <div id="records-list" style="flex: 1; overflow-y: auto;"></div>
@@ -235,11 +238,12 @@
     let appData = JSON.parse(localStorage.getItem('pharma_elite_v1')) || [];
     let curID = null, editID = null, activeNode = 'rate';
     let inputStates = { rate: '', qty: '', stock: '' };
-    let currentOpenMenu = null;
-    let pendingActionID = null;
-    let deleteMode = 'project'; // 'project' or 'entry'
+    let currentOpenMenu = null, pendingActionID = null, deleteMode = 'project';
 
     function save() { localStorage.setItem('pharma_elite_v1', JSON.stringify(appData)); }
+
+    // Haptic Feedback Function
+    function v() { if (navigator.vibrate) navigator.vibrate(20); }
 
     function renderHomeList() {
         const container = document.getElementById('proj-list-container');
@@ -249,16 +253,14 @@
             return `<div class="proj-card" onclick="openProject(${p.id})">
                 <div style="flex:1">
                     <span class="proj-name-text">${p.name}</span><br>
-                    <small style="color:var(--text-dim)">${p.entries.length} items recorded</small>
+                    <small style="color:var(--text-dim)">${p.entries.length} items</small>
                 </div>
-                <div style="text-align:right">
-                    <span class="proj-total-amt">${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-                </div>
+                <div style="text-align:right"><span class="proj-total-amt">${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>
                 <div onclick="event.stopPropagation()" style="margin-left:15px">
                     <button class="proj-menu-btn" onclick="toggleProjectMenu(event, ${p.id})">⋮</button>
                     <div class="proj-menu" id="proj-menu-${p.id}">
                         <div class="proj-menu-item" onclick="initRename(${p.id})">✏️ Rename</div>
-                        <div class="proj-menu-item del-opt" onclick="initDelete(${p.id}, 'project')">🗑️ Delete</div>
+                        <div class="proj-menu-item" style="color:var(--danger)" onclick="initDelete(${p.id}, 'project')">🗑️ Delete</div>
                     </div>
                 </div>
             </div>`;
@@ -267,78 +269,80 @@
         document.getElementById('portfolio-total-amount').innerText = portTotal.toLocaleString(undefined, {minimumFractionDigits: 2});
     }
 
-    // Modal Controls
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // Unified Delete Logic
-    function initDelete(id, mode) {
-        pendingActionID = id;
-        deleteMode = mode;
-        if(currentOpenMenu) currentOpenMenu.style.display = 'none';
+    function kp(n) {
+        v(); // Vibrate on key press
+        let currentStr = inputStates[activeNode];
+        if (currentStr === "" && n === "0") return;
+        if (currentStr === "" && n === ".") { currentStr = "0."; }
+        else if (n === "." && currentStr.includes(".")) return;
+        else { currentStr += n; }
+        inputStates[activeNode] = currentStr;
+        refreshInputUI();
+    }
+
+    // All Clear Function
+    function ka() {
+        v();
+        inputStates[activeNode] = '';
+        refreshInputUI();
+    }
+
+    function kd() { 
+        v();
+        inputStates[activeNode] = inputStates[activeNode].slice(0, -1); 
+        refreshInputUI(); 
+    }
+
+    function refreshInputUI() {
+        document.getElementById('val-rate').innerText = inputStates.rate || '0';
+        document.getElementById('val-qty').innerText = inputStates.qty || '0';
+        document.getElementById('val-stock').innerText = inputStates.stock || '0';
+    }
+
+    function handleFlow() {
+        v();
+        if(editID) finishUpdate();
+        else if(activeNode === 'rate') setNode('qty');
+        else if(activeNode === 'qty') setNode('stock');
+        else performSave();
+    }
+
+    function performSave() {
+        const r = parseFloat(inputStates.rate), q = parseFloat(inputStates.qty), s = parseFloat(inputStates.stock);
+        if(!r || !q || isNaN(s)) return;
+        appData.find(x => x.id === curID).entries.unshift({ id: Date.now(), r, q, s, val: ((r/q)*s).toFixed(2) });
+        save(); resetCalculator(); renderRecords();
+    }
+
+    function setNode(node) {
+        v();
+        activeNode = node;
+        document.querySelectorAll('.input-node').forEach(n => n.classList.remove('active','edit-mode'));
+        const el = document.getElementById(`node-${node}`);
+        el.classList.add('active');
         
-        const title = document.getElementById('del-modal-title');
-        const desc = document.getElementById('del-modal-desc');
-
-        if(mode === 'project') {
-            title.innerText = "Delete Company?";
-            desc.innerText = "This action cannot be undone. All company data will be lost.";
+        const cancelBtn = document.getElementById('cancel-edit-btn');
+        if(editID) {
+            el.classList.add('edit-mode');
+            cancelBtn.classList.remove('hidden');
         } else {
-            title.innerText = "Remove Entry?";
-            desc.innerText = "This record will be permanently deleted from the list.";
+            cancelBtn.classList.add('hidden');
         }
-        
-        openModal('modal-delete');
+
+        const btn = document.getElementById('primary-action-btn');
+        btn.innerText = editID ? "CONFIRM" : (node === 'stock' ? "SAVE ENTRY" : "NEXT FIELD");
+        btn.className = editID ? 'key key-main edit-btn' : 'key key-main';
     }
-
-    document.getElementById('confirm-delete-btn').onclick = () => {
-        if(deleteMode === 'project') {
-            appData = appData.filter(p => p.id !== pendingActionID);
-            save(); renderHomeList();
-        } else {
-            const p = appData.find(x => x.id === curID);
-            p.entries = p.entries.filter(e => e.id !== pendingActionID);
-            save(); renderRecords();
-        }
-        closeModal('modal-delete');
-    };
-
-    // Rename Logic
-    function initRename(id) {
-        pendingActionID = id;
-        const p = appData.find(x => x.id === id);
-        const input = document.getElementById('rename-input');
-        input.value = p.name;
-        if(currentOpenMenu) currentOpenMenu.style.display = 'none';
-        openModal('modal-rename');
-        setTimeout(() => { input.focus(); input.select(); }, 100);
-    }
-
-    document.getElementById('confirm-rename-btn').onclick = () => {
-        const newName = document.getElementById('rename-input').value.trim().toUpperCase();
-        if(newName) {
-            const p = appData.find(x => x.id === pendingActionID);
-            p.name = newName;
-            save(); renderHomeList();
-            closeModal('modal-rename');
-        }
-    };
-
-    function toggleProjectMenu(e, id) {
-        e.stopPropagation();
-        const menu = document.getElementById(`proj-menu-${id}`);
-        if(currentOpenMenu && currentOpenMenu !== menu) currentOpenMenu.style.display = 'none';
-        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-        currentOpenMenu = menu;
-    }
-
-    window.onclick = () => { if(currentOpenMenu) { currentOpenMenu.style.display = 'none'; currentOpenMenu = null; } };
 
     function newProject() {
-        const name = document.getElementById('proj-name').value;
+        const inputEl = document.getElementById('proj-name');
+        const name = inputEl.value.trim();
         if(!name) return;
         appData.push({ id: Date.now(), name: name.toUpperCase(), entries: [] });
-        save(); document.getElementById('proj-name').value = ''; renderHomeList();
+        save(); inputEl.value = ''; renderHomeList();
     }
 
     function openProject(id) {
@@ -356,38 +360,45 @@
         renderHomeList();
     }
 
-    function setNode(node) {
-        activeNode = node;
-        document.querySelectorAll('.input-node').forEach(n => n.classList.remove('active','edit-mode'));
-        const el = document.getElementById(`node-${node}`);
-        el.classList.add('active');
-        if(editID) el.classList.add('edit-mode');
-        const btn = document.getElementById('primary-action-btn');
-        btn.innerText = editID ? "CONFIRM" : (node === 'stock' ? "SAVE ENTRY" : "NEXT FIELD");
-        btn.className = editID ? 'key key-main edit-btn' : 'key key-main';
+    function toggleProjectMenu(e, id) {
+        e.stopPropagation();
+        const menu = document.getElementById(`proj-menu-${id}`);
+        if(currentOpenMenu && currentOpenMenu !== menu) currentOpenMenu.style.display = 'none';
+        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        currentOpenMenu = menu;
     }
 
-    function kp(n) { inputStates[activeNode] += n; refreshInputUI(); }
-    function kd() { inputStates[activeNode] = inputStates[activeNode].slice(0, -1); refreshInputUI(); }
-    function refreshInputUI() {
-        document.getElementById('val-rate').innerText = inputStates.rate || '0';
-        document.getElementById('val-qty').innerText = inputStates.qty || '0';
-        document.getElementById('val-stock').innerText = inputStates.stock || '0';
+    function initDelete(id, mode) {
+        pendingActionID = id; deleteMode = mode;
+        openModal('modal-delete');
     }
 
-    function handleFlow() {
-        if(editID) finishUpdate();
-        else if(activeNode === 'rate') setNode('qty');
-        else if(activeNode === 'qty') setNode('stock');
-        else performSave();
+    document.getElementById('confirm-delete-btn').onclick = () => {
+        if(deleteMode === 'project') {
+            appData = appData.filter(p => p.id !== pendingActionID);
+            save(); renderHomeList();
+        } else {
+            const p = appData.find(x => x.id === curID);
+            p.entries = p.entries.filter(e => e.id !== pendingActionID);
+            save(); renderRecords();
+        }
+        closeModal('modal-delete');
+    };
+
+    function initRename(id) {
+        pendingActionID = id;
+        const p = appData.find(x => x.id === id);
+        document.getElementById('rename-input').value = p.name;
+        openModal('modal-rename');
     }
 
-    function performSave() {
-        const r = parseFloat(inputStates.rate), q = parseFloat(inputStates.qty), s = parseFloat(inputStates.stock);
-        if(!r || !q || isNaN(s)) return;
-        appData.find(x => x.id === curID).entries.unshift({ id: Date.now(), r, q, s, val: ((r/q)*s).toFixed(2) });
-        save(); resetCalculator(); renderRecords();
-    }
+    document.getElementById('confirm-rename-btn').onclick = () => {
+        const newName = document.getElementById('rename-input').value.trim().toUpperCase();
+        if(newName) {
+            appData.find(x => x.id === pendingActionID).name = newName;
+            save(); renderHomeList(); closeModal('modal-rename');
+        }
+    };
 
     function renderRecords() {
         const p = appData.find(x => x.id === curID);
@@ -421,8 +432,16 @@
         save(); resetCalculator(); renderRecords();
     }
 
-    function resetCalculator() { editID = null; inputStates = { rate: '', qty: '', stock: '' }; refreshInputUI(); setNode('rate'); }
+    function resetCalculator() { 
+        editID = null; 
+        inputStates = { rate: '', qty: '', stock: '' }; 
+        refreshInputUI(); 
+        setNode('rate'); 
+    }
+    
     function toggleDrawer() { document.getElementById('side-drawer').classList.toggle('open'); document.getElementById('drawer-overlay').classList.toggle('open'); }
+
+    window.onclick = () => { if(currentOpenMenu) { currentOpenMenu.style.display = 'none'; currentOpenMenu = null; } };
 
     renderHomeList();
 </script>
