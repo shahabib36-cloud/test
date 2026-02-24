@@ -226,21 +226,11 @@
 </div>
 
 <script>
-    // ================== HAPTIC FEEDBACK (RELIABLE VIBRATION) ==================
-    let userInteracted = false;  // flag to satisfy browser policy (user gesture required)
-
-    // vibration function with support check + user interaction guard
-    function vibrate(pattern) {
-        // only vibrate if user has tapped something and API exists
-        if (userInteracted && window.navigator && window.navigator.vibrate) {
-            window.navigator.vibrate(pattern);
-        }
+    // Vibration helper – 50ms strong tap feedback
+    function v() {
+        if (navigator.vibrate) navigator.vibrate(50);
     }
 
-    // mark interaction on any keypad / action function (called from onclick)
-    // we set flag inside each function before vibration
-
-    // ================== EXISTING DATA / STATE (unchanged) ==================
     let appData = JSON.parse(localStorage.getItem('pharma_elite_v1')) || [];
     let curID = null, editID = null, activeNode = 'rate';
     let inputStates = { rate: '', qty: '', stock: '' };
@@ -275,13 +265,9 @@
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // ================== MODIFIED FUNCTIONS WITH HAPTICS ==================
+    // Vibration added to every keypad interaction
     function kp(n) {
-        // user interacted (for vibration)
-        userInteracted = true;
-        // trigger short vibration (10ms for numbers / dot)
-        vibrate(10);
-
+        v(); // haptic feedback
         let currentStr = inputStates[activeNode];
         
         // Logic to prevent leading zero (07 becomes 7)
@@ -294,10 +280,8 @@
         refreshInputUI();
     }
 
-    function kd() { 
-        userInteracted = true;
-        vibrate(30);  // delete action = 30ms
-
+    function kd() {
+        v(); // haptic feedback
         inputStates[activeNode] = inputStates[activeNode].slice(0, -1); 
         refreshInputUI(); 
     }
@@ -309,9 +293,7 @@
     }
 
     function handleFlow() {
-        userInteracted = true;
-        vibrate(30);  // primary action (NEXT / SAVE / CONFIRM) = 30ms
-
+        v(); // haptic feedback
         if(editID) finishUpdate();
         else if(activeNode === 'rate') setNode('qty');
         else if(activeNode === 'qty') setNode('stock');
@@ -326,6 +308,7 @@
     }
 
     function setNode(node) {
+        v(); // haptic feedback for tapping the input field
         activeNode = node;
         document.querySelectorAll('.input-node').forEach(n => n.classList.remove('active','edit-mode'));
         const el = document.getElementById(`node-${node}`);
@@ -354,6 +337,7 @@
     }
 
     function exitToHome() {
+        v(); // haptic for back button
         document.getElementById('home-view').classList.remove('hidden');
         document.getElementById('calc-view').classList.add('hidden');
         renderHomeList();
@@ -432,7 +416,12 @@
     }
 
     function resetCalculator() { editID = null; inputStates = { rate: '', qty: '', stock: '' }; refreshInputUI(); setNode('rate'); }
-    function toggleDrawer() { document.getElementById('side-drawer').classList.toggle('open'); document.getElementById('drawer-overlay').classList.toggle('open'); }
+    
+    function toggleDrawer() {
+        v(); // haptic for opening/closing drawer
+        document.getElementById('side-drawer').classList.toggle('open');
+        document.getElementById('drawer-overlay').classList.toggle('open');
+    }
 
     window.onclick = () => { if(currentOpenMenu) { currentOpenMenu.style.display = 'none'; currentOpenMenu = null; } };
 
