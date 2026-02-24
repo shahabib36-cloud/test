@@ -97,14 +97,6 @@
         .key { background: var(--bg); border: none; color: white; padding: 22px 0; font-size: 2.2rem; font-weight: 500; outline: none; }
         .key-main { grid-column: span 3; background: #000; color: white; padding: 28px 0; font-weight: 800; font-size: 1.5rem; border: 2px solid var(--accent); border-radius: 14px; margin: 8px 5px; text-transform: uppercase; }
         .key-main.edit-btn { border-color: var(--edit-glow); color: var(--edit-glow); }
-        
-        /* New Styles for AC and Cancel Buttons */
-        .key-ac { color: var(--danger); font-weight: 700; }
-        .cancel-edit-btn { 
-            grid-column: span 3; background: #1a1a1a; color: var(--text-dim); 
-            padding: 12px 0; font-weight: 700; font-size: 1rem; border: 1px solid #333; 
-            border-radius: 10px; margin: 0 5px 8px; text-transform: uppercase;
-        }
 
         /* --- Drawer & Modals --- */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
@@ -182,7 +174,6 @@
         </div>
 
         <div class="keypad-wrapper">
-            <button id="cancel-edit-btn" class="cancel-edit-btn hidden" onclick="resetCalculator()">Cancel Edit</button>
             <div class="keypad">
                 <button class="key key-main" id="primary-action-btn" onclick="handleFlow()">NEXT FIELD</button>
                 <button class="key" onclick="kp('7')">7</button>
@@ -194,7 +185,7 @@
                 <button class="key" onclick="kp('1')">1</button>
                 <button class="key" onclick="kp('2')">2</button>
                 <button class="key" onclick="kp('3')">3</button>
-                <button class="key key-ac" onclick="ka()">AC</button>
+                <button class="key" style="color: var(--text-dim);" onclick="kd()">DEL</button>
                 <button class="key" onclick="kp('0')">0</button>
                 <button class="key" onclick="kp('.')">.</button>
             </div>
@@ -235,15 +226,27 @@
 </div>
 
 <script>
+    // ================== HAPTIC FEEDBACK (RELIABLE VIBRATION) ==================
+    let userInteracted = false;  // flag to satisfy browser policy (user gesture required)
+
+    // vibration function with support check + user interaction guard
+    function vibrate(pattern) {
+        // only vibrate if user has tapped something and API exists
+        if (userInteracted && window.navigator && window.navigator.vibrate) {
+            window.navigator.vibrate(pattern);
+        }
+    }
+
+    // mark interaction on any keypad / action function (called from onclick)
+    // we set flag inside each function before vibration
+
+    // ================== EXISTING DATA / STATE (unchanged) ==================
     let appData = JSON.parse(localStorage.getItem('pharma_elite_v1')) || [];
     let curID = null, editID = null, activeNode = 'rate';
     let inputStates = { rate: '', qty: '', stock: '' };
     let currentOpenMenu = null, pendingActionID = null, deleteMode = 'project';
 
     function save() { localStorage.setItem('pharma_elite_v1', JSON.stringify(appData)); }
-
-    // Haptic Feedback Function
-    function v() { if (navigator.vibrate) navigator.vibrate(20); }
 
     function renderHomeList() {
         const container = document.getElementById('proj-list-container');
@@ -272,26 +275,29 @@
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
+    // ================== MODIFIED FUNCTIONS WITH HAPTICS ==================
     function kp(n) {
-        v(); // Vibrate on key press
+        // user interacted (for vibration)
+        userInteracted = true;
+        // trigger short vibration (10ms for numbers / dot)
+        vibrate(10);
+
         let currentStr = inputStates[activeNode];
-        if (currentStr === "" && n === "0") return;
+        
+        // Logic to prevent leading zero (07 becomes 7)
+        if (currentStr === "" && n === "0") return; // First digit can't be 0 unless it's a decimal
         if (currentStr === "" && n === ".") { currentStr = "0."; }
-        else if (n === "." && currentStr.includes(".")) return;
+        else if (n === "." && currentStr.includes(".")) return; // Only one dot allowed
         else { currentStr += n; }
+        
         inputStates[activeNode] = currentStr;
         refreshInputUI();
     }
 
-    // All Clear Function
-    function ka() {
-        v();
-        inputStates[activeNode] = '';
-        refreshInputUI();
-    }
-
     function kd() { 
-        v();
+        userInteracted = true;
+        vibrate(30);  // delete action = 30ms
+
         inputStates[activeNode] = inputStates[activeNode].slice(0, -1); 
         refreshInputUI(); 
     }
@@ -303,7 +309,9 @@
     }
 
     function handleFlow() {
-        v();
+        userInteracted = true;
+        vibrate(30);  // primary action (NEXT / SAVE / CONFIRM) = 30ms
+
         if(editID) finishUpdate();
         else if(activeNode === 'rate') setNode('qty');
         else if(activeNode === 'qty') setNode('stock');
@@ -318,20 +326,11 @@
     }
 
     function setNode(node) {
-        v();
         activeNode = node;
         document.querySelectorAll('.input-node').forEach(n => n.classList.remove('active','edit-mode'));
         const el = document.getElementById(`node-${node}`);
         el.classList.add('active');
-        
-        const cancelBtn = document.getElementById('cancel-edit-btn');
-        if(editID) {
-            el.classList.add('edit-mode');
-            cancelBtn.classList.remove('hidden');
-        } else {
-            cancelBtn.classList.add('hidden');
-        }
-
+        if(editID) el.classList.add('edit-mode');
         const btn = document.getElementById('primary-action-btn');
         btn.innerText = editID ? "CONFIRM" : (node === 'stock' ? "SAVE ENTRY" : "NEXT FIELD");
         btn.className = editID ? 'key key-main edit-btn' : 'key key-main';
@@ -432,13 +431,7 @@
         save(); resetCalculator(); renderRecords();
     }
 
-    function resetCalculator() { 
-        editID = null; 
-        inputStates = { rate: '', qty: '', stock: '' }; 
-        refreshInputUI(); 
-        setNode('rate'); 
-    }
-    
+    function resetCalculator() { editID = null; inputStates = { rate: '', qty: '', stock: '' }; refreshInputUI(); setNode('rate'); }
     function toggleDrawer() { document.getElementById('side-drawer').classList.toggle('open'); document.getElementById('drawer-overlay').classList.toggle('open'); }
 
     window.onclick = () => { if(currentOpenMenu) { currentOpenMenu.style.display = 'none'; currentOpenMenu = null; } };
