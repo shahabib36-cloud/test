@@ -17,6 +17,7 @@
             --glass: rgba(255, 255, 255, 0.03);
             --danger: #ff4d4d;
             --modal-bg: rgba(10, 12, 16, 0.95);
+            --key-flash: rgba(255, 255, 255, 0.3);
         }
 
         * { box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -26,18 +27,53 @@
             color: white; 
             margin: 0; 
             height: 100vh;
-            display: flex;
-            flex-direction: column;
+            overflow: hidden;        
         }
 
-        /* --- Home View & Scroll Fix --- */
-        #home-view {
+        .view-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;          
+        }
+
+        #home-view, #calc-view {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.25s ease;
+            will-change: transform, opacity;
+            backface-visibility: hidden;
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            background: var(--bg);      
+        }
+
+        #home-view {
             overflow-y: auto;
         }
-        
+
+        #calc-view {
+            overflow: hidden;
+        }
+
+        .hidden {
+            pointer-events: none !important;
+            transform: translateX(100%) !important;  
+            opacity: 1;                               
+            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.25s ease;
+        }
+
+        #home-view.hidden {
+            transform: translateX(-100%) !important;
+        }
+
+        #calc-view.hidden {
+            transform: translateX(100%) !important;
+        }
+
         .home-header { padding: 40px 20px 20px; text-align: center; flex-shrink: 0; }
         .home-header h1 { font-weight: 800; font-size: 2.5rem; margin: 0; letter-spacing: -1px; text-transform: uppercase; }
         
@@ -67,6 +103,38 @@
 
         #proj-list-container { padding-bottom: 50px; }
 
+        /* ----- empty state styles (enhanced) ----- */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+            min-height: 240px;
+        }
+        .empty-state .large-emoji {
+            font-size: 5rem;
+            line-height: 1;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
+        }
+        .empty-state h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 8px 0 8px;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+        .empty-state p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            max-width: 260px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+        /* ----------------------------- */
+
         .proj-card { background: linear-gradient(145deg, #161b22, #0d1117); margin: 0 20px 16px; padding: 24px 20px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; cursor: pointer; position: relative; }
         .proj-name-text { font-size: 1.4rem; font-weight: 800; }
         .proj-total-amt { font-size: 2rem; font-weight: 800; color: var(--accent); }
@@ -75,11 +143,9 @@
         .proj-menu { display: none; position: absolute; top: 75px; right: 20px; background: #1e1e1e; border-radius: 16px; padding: 8px; min-width: 160px; z-index: 1000; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .proj-menu-item { padding: 14px 20px; color: white; cursor: pointer; border-radius: 10px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
 
-        /* --- Calculator View --- */
-        #calc-view { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         header { padding: env(safe-area-inset-top) 20px 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 12, 0.8); backdrop-filter: blur(10px); flex-shrink: 0; }
         .header-title { font-weight: 800; font-size: 1.3rem; color: var(--accent); }
-        .icon-btn { width: 50px; height: 50px; border-radius: 14px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .icon-btn { width: 50px; height: 50px; border-radius: 14px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; }
 
         .valuation-container { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         .valuation-label { font-size: 1rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 3px; font-weight: 600; }
@@ -94,11 +160,53 @@
 
         .keypad-wrapper { background: #000; padding: 10px 5px 0; }
         .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-        .key { background: var(--bg); border: none; color: white; padding: 22px 0; font-size: 2.2rem; font-weight: 500; outline: none; }
-        .key-main { grid-column: span 3; background: #000; color: white; padding: 28px 0; font-weight: 800; font-size: 1.5rem; border: 2px solid var(--accent); border-radius: 14px; margin: 8px 5px; text-transform: uppercase; }
-        .key-main.edit-btn { border-color: var(--edit-glow); color: var(--edit-glow); }
+        .key {
+            background: var(--bg);
+            border: none;
+            color: white;
+            padding: 22px 0;
+            font-size: 2.2rem;
+            font-weight: 500;
+            outline: none;
+            cursor: pointer;
+            transition: transform 0.1s ease, background 0.1s ease; /* smooth press & flash */
+        }
+        /* visual press (scale) */
+        .key:active {
+            transform: scale(0.95);
+        }
+        /* white flash class (applied via JS) */
+        .key.flash {
+            background: var(--key-flash) !important;
+        }
+        /* DEL key subtle red tint */
+        .key-del {
+            color: #ffb3b3 !important;
+            border: 1px solid rgba(255, 100, 100, 0.2);
+            background: rgba(180, 60, 60, 0.1);
+        }
+        .key-main { 
+            grid-column: span 3; 
+            background: #000; 
+            color: white; 
+            padding: 28px 0; 
+            font-weight: 800; 
+            font-size: 1.5rem; 
+            border: 2px solid var(--accent); 
+            border-radius: 14px; 
+            margin: 8px 5px; 
+            text-transform: uppercase; 
+            cursor: pointer; 
+            transition: transform 0.1s ease, background 0.1s ease;
+        }
+        .key-main:active {
+            transform: scale(0.97);
+        }
+        .key-main.edit-btn { 
+            border-color: var(--edit-glow); 
+            color: var(--edit-glow); 
+        }
 
-        /* --- Drawer & Modals --- */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
         .modal-card { background: var(--panel); width: 100%; max-width: 350px; border-radius: 28px; border: 1px solid rgba(255,255,255,0.1); padding: 30px; text-align: center; }
         .modal-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 18px; border-radius: 14px; color: white; font-size: 1.1rem; text-align: center; outline: none; margin-bottom: 20px; }
@@ -114,8 +222,6 @@
         .drawer-overlay.open { opacity: 1; visibility: visible; }
         .entry-item { background: rgba(255,255,255,0.03); margin: 10px 15px; padding: 20px; border-radius: 18px; display: flex; justify-content: space-between; align-items: center; }
 
-        .hidden { display: none !important; }
-
         @media (max-width: 400px) {
             .home-header h1 { font-size: 2rem; }
             .portfolio-value { font-size: 2.4rem; }
@@ -127,67 +233,71 @@
 </head>
 <body>
 
-<div id="home-view">
-    <div class="home-header">
-        <h1>AS <span style="color:var(--accent)">PHARMACY</span></h1>
-        <p>Inventory Control Dashboard</p>
-    </div>
-    <div class="portfolio-card">
-        <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase;">Total Pharmacy Value</span>
-        <span class="portfolio-value" id="portfolio-total-amount">0.00</span>
-    </div>
-    
-    <div class="create-proj-box">
-        <input type="text" id="proj-name" placeholder="Enter Company Name...">
-        <button class="btn-create" onclick="newProject()">Create New Company</button>
-    </div>
-    
-    <div id="proj-list-container"></div>
-</div>
-
-<div id="calc-view" class="hidden">
-    <header>
-        <button class="icon-btn" onclick="exitToHome()">←</button>
-        <div class="header-title" id="active-title">CALCULATOR</div>
-        <button class="icon-btn" onclick="toggleDrawer()">☰</button>
-    </header>
-
-    <div class="valuation-container">
-        <div class="valuation-label">Project Valuation</div>
-        <div class="total-large" id="grand-total-display">0.00</div>
+<div class="view-wrapper">
+    <div id="home-view">
+        <div class="home-header">
+            <h1>AS <span style="color:var(--accent)">PHARMACY</span></h1>
+            <p>Inventory Control Dashboard</p>
+        </div>
+        <div class="portfolio-card">
+            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase;">Total Pharmacy Value</span>
+            <span class="portfolio-value" id="portfolio-total-amount">0.00</span>
+        </div>
+        
+        <div class="create-proj-box">
+            <input type="text" id="proj-name" placeholder="Enter Company Name...">
+            <button class="btn-create" onclick="newProject()">Create New Company</button>
+        </div>
+        
+        <div id="proj-list-container"></div>
     </div>
 
-    <div class="bottom-ui">
-        <div class="input-grid">
-            <div class="input-node active" id="node-rate" onclick="setNode('rate')">
-                <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">BOX RATE</span>
-                <div class="node-val" id="val-rate">0</div>
-            </div>
-            <div class="input-node" id="node-qty" onclick="setNode('qty')">
-                <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">QTY</span>
-                <div class="node-val" id="val-qty">0</div>
-            </div>
-            <div class="input-node" id="node-stock" onclick="setNode('stock')">
-                <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">STOCK</span>
-                <div class="node-val" id="val-stock">0</div>
-            </div>
+    <div id="calc-view" class="hidden">    
+        <header>
+            <button class="icon-btn" onclick="exitToHome()">←</button>
+            <div class="header-title" id="active-title">CALCULATOR</div>
+            <button class="icon-btn" onclick="toggleDrawer()">☰</button>
+        </header>
+
+        <div class="valuation-container">
+            <div class="valuation-label">Project Valuation</div>
+            <div class="total-large" id="grand-total-display">0.00</div>
         </div>
 
-        <div class="keypad-wrapper">
-            <div class="keypad">
-                <button class="key key-main" id="primary-action-btn" onclick="handleFlow()">NEXT FIELD</button>
-                <button class="key" onclick="kp('7')">7</button>
-                <button class="key" onclick="kp('8')">8</button>
-                <button class="key" onclick="kp('9')">9</button>
-                <button class="key" onclick="kp('4')">4</button>
-                <button class="key" onclick="kp('5')">5</button>
-                <button class="key" onclick="kp('6')">6</button>
-                <button class="key" onclick="kp('1')">1</button>
-                <button class="key" onclick="kp('2')">2</button>
-                <button class="key" onclick="kp('3')">3</button>
-                <button class="key" style="color: var(--text-dim);" onclick="kd()">DEL</button>
-                <button class="key" onclick="kp('0')">0</button>
-                <button class="key" onclick="kp('.')">.</button>
+        <div class="bottom-ui">
+            <div class="input-grid">
+                <div class="input-node active" id="node-rate" onclick="setNode('rate')">
+                    <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">BOX RATE</span>
+                    <div class="node-val" id="val-rate">0</div>
+                </div>
+                <div class="input-node" id="node-qty" onclick="setNode('qty')">
+                    <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">QTY</span>
+                    <div class="node-val" id="val-qty">0</div>
+                </div>
+                <div class="input-node" id="node-stock" onclick="setNode('stock')">
+                    <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">STOCK</span>
+                    <div class="node-val" id="val-stock">0</div>
+                </div>
+            </div>
+
+            <div class="keypad-wrapper">
+                <div class="keypad">
+                    <button class="key key-main" id="primary-action-btn" onclick="handleFlow()">NEXT FIELD</button>
+                    <!-- numeric keys with event for flash -->
+                    <button class="key" onclick="kp('7', event)">7</button>
+                    <button class="key" onclick="kp('8', event)">8</button>
+                    <button class="key" onclick="kp('9', event)">9</button>
+                    <button class="key" onclick="kp('4', event)">4</button>
+                    <button class="key" onclick="kp('5', event)">5</button>
+                    <button class="key" onclick="kp('6', event)">6</button>
+                    <button class="key" onclick="kp('1', event)">1</button>
+                    <button class="key" onclick="kp('2', event)">2</button>
+                    <button class="key" onclick="kp('3', event)">3</button>
+                    <!-- DEL key with special class & no flash (only vibration) -->
+                    <button class="key key-del" style="color: var(--text-dim);" onclick="kd()">DEL</button>
+                    <button class="key" onclick="kp('0', event)">0</button>
+                    <button class="key" onclick="kp('.', event)">.</button>
+                </div>
             </div>
         </div>
     </div>
@@ -226,9 +336,17 @@
 </div>
 
 <script>
-    // Vibration helper – 50ms strong tap feedback
     function v() {
         if (navigator.vibrate) navigator.vibrate(50);
+    }
+
+    // flash helper for numeric keys (white flash 100ms)
+    function flashKey(el) {
+        if (!el) return;
+        el.classList.add('flash');
+        setTimeout(() => {
+            el.classList.remove('flash');
+        }, 100);
     }
 
     let appData = JSON.parse(localStorage.getItem('pharma_elite_v1')) || [];
@@ -241,23 +359,35 @@
     function renderHomeList() {
         const container = document.getElementById('proj-list-container');
         const sortedData = [...appData].sort((a, b) => b.id - a.id);
-        container.innerHTML = sortedData.map(p => {
-            const total = p.entries.reduce((sum, e) => sum + parseFloat(e.val), 0);
-            return `<div class="proj-card" onclick="openProject(${p.id})">
-                <div style="flex:1">
-                    <span class="proj-name-text">${p.name}</span><br>
-                    <small style="color:var(--text-dim)">${p.entries.length} items</small>
+        
+        if (sortedData.length === 0) {
+            // ----- beautiful empty state with 📦 emoji -----
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="large-emoji">📦</div>
+                    <h3>No Companies Found</h3>
+                    <p>Add a company name above to start.</p>
                 </div>
-                <div style="text-align:right"><span class="proj-total-amt">${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>
-                <div onclick="event.stopPropagation()" style="margin-left:15px">
-                    <button class="proj-menu-btn" onclick="toggleProjectMenu(event, ${p.id})">⋮</button>
-                    <div class="proj-menu" id="proj-menu-${p.id}">
-                        <div class="proj-menu-item" onclick="initRename(${p.id})">✏️ Rename</div>
-                        <div class="proj-menu-item" style="color:var(--danger)" onclick="initDelete(${p.id}, 'project')">🗑️ Delete</div>
+            `;
+        } else {
+            container.innerHTML = sortedData.map(p => {
+                const total = p.entries.reduce((sum, e) => sum + parseFloat(e.val), 0);
+                return `<div class="proj-card" onclick="openProject(${p.id})">
+                    <div style="flex:1">
+                        <span class="proj-name-text">${p.name}</span><br>
+                        <small style="color:var(--text-dim)">${p.entries.length} items</small>
                     </div>
-                </div>
-            </div>`;
-        }).join('');
+                    <div style="text-align:right"><span class="proj-total-amt">${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>
+                    <div onclick="event.stopPropagation()" style="margin-left:15px">
+                        <button class="proj-menu-btn" onclick="toggleProjectMenu(event, ${p.id})">⋮</button>
+                        <div class="proj-menu" id="proj-menu-${p.id}">
+                            <div class="proj-menu-item" onclick="initRename(${p.id})">✏️ Rename</div>
+                            <div class="proj-menu-item" style="color:var(--danger)" onclick="initDelete(${p.id}, 'project')">🗑️ Delete</div>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
         const portTotal = appData.reduce((s, p) => s + p.entries.reduce((ss, e) => ss + parseFloat(e.val), 0), 0);
         document.getElementById('portfolio-total-amount').innerText = portTotal.toLocaleString(undefined, {minimumFractionDigits: 2});
     }
@@ -265,23 +395,22 @@
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // Vibration added to every keypad interaction
-    function kp(n) {
-        v(); // haptic feedback
+    // modified kp to accept event and flash the key
+    function kp(n, ev) {
+        v();
+        if (ev && ev.target) flashKey(ev.target);
         let currentStr = inputStates[activeNode];
-        
-        // Logic to prevent leading zero (07 becomes 7)
-        if (currentStr === "" && n === "0") return; // First digit can't be 0 unless it's a decimal
+        if (currentStr === "" && n === "0") return;
         if (currentStr === "" && n === ".") { currentStr = "0."; }
-        else if (n === "." && currentStr.includes(".")) return; // Only one dot allowed
+        else if (n === "." && currentStr.includes(".")) return;
         else { currentStr += n; }
-        
         inputStates[activeNode] = currentStr;
         refreshInputUI();
     }
 
     function kd() {
-        v(); // haptic feedback
+        v();
+        // no flash for DEL (only numeric keys have flash)
         inputStates[activeNode] = inputStates[activeNode].slice(0, -1); 
         refreshInputUI(); 
     }
@@ -293,7 +422,7 @@
     }
 
     function handleFlow() {
-        v(); // haptic feedback
+        v();
         if(editID) finishUpdate();
         else if(activeNode === 'rate') setNode('qty');
         else if(activeNode === 'qty') setNode('stock');
@@ -308,7 +437,7 @@
     }
 
     function setNode(node) {
-        v(); // haptic feedback for tapping the input field
+        v();
         activeNode = node;
         document.querySelectorAll('.input-node').forEach(n => n.classList.remove('active','edit-mode'));
         const el = document.getElementById(`node-${node}`);
@@ -328,19 +457,21 @@
     }
 
     function openProject(id) {
+        v();
         curID = id;
         const p = appData.find(x => x.id === id);
         document.getElementById('active-title').innerText = p.name;
-        document.getElementById('home-view').classList.add('hidden');
         document.getElementById('calc-view').classList.remove('hidden');
-        resetCalculator(); renderRecords();
+        document.getElementById('home-view').classList.add('hidden');
+        resetCalculator(); 
+        renderRecords();
     }
 
     function exitToHome() {
-        v(); // haptic for back button
+        v();
         document.getElementById('home-view').classList.remove('hidden');
         document.getElementById('calc-view').classList.add('hidden');
-        renderHomeList();
+        renderHomeList();  
     }
 
     function toggleProjectMenu(e, id) {
@@ -418,7 +549,7 @@
     function resetCalculator() { editID = null; inputStates = { rate: '', qty: '', stock: '' }; refreshInputUI(); setNode('rate'); }
     
     function toggleDrawer() {
-        v(); // haptic for opening/closing drawer
+        v();
         document.getElementById('side-drawer').classList.toggle('open');
         document.getElementById('drawer-overlay').classList.toggle('open');
     }
